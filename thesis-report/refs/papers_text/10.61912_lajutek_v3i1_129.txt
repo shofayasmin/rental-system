@@ -1,0 +1,594 @@
+
+
+=== PAGE 1 ===
+    
+  
+ 
+ 
+1 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 3 No 1 Tahun 2025 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v3i1.129 
+ SISTEM INFORMASI PENYEWAAN KONTRAKAN BERBASIS WEBSITE 
+DI KABUPATEN BULUKUMBA 
+HOUSE RENTAL INFORMATION SYSTEM AT BULUKUMBA REGENCY 
+WITH WEBSITE BASED 
+Zaskia Darajat Wahab1, Dedy Hendryadi2, Sri Asfirawati Halik3 
+1 Sistem Informasi, ITEB Bina Adinata, email:  zaskiadar02@gmail.com 
+2 Sistem Informasi, ITEB Bina Adinata, email:  dedyhenryadi1990@gmail.com  
+3 Sistem Informasi, ITEB Bina Adinata, email:  fhyefhyu @gmail.com  
+* Penulis Korespondensi: E-mail:  dedyhenryadi1990@gmail.com  
+ 
+ABSTRAK 
+Penelitian ini bertujuan untuk: (1) Merancang sistem informasi penyewaan kontrakan berbasis 
+website di wilayah kota Bulukumba. (2) Mengimplementasikan sistem informasi penyewaan 
+kontrakan berbasis website di wilayah kota Bulukumba. (3) Mengetahui respon pengguna sistem 
+informasi penyewaan kontrakan berbasis website di wilayah kota Bulukumba. Metode penelitian 
+yang digunakan dalam penelitian ini adalah metode System Development Life Cycle (SDLC) 
+dengan Model Waterfall Memiliki beberapa tahapan yaitu: requirement analysis, design, 
+implementation, testing, dan maintenance. Pengumpulan data yang digunakan yaitu: Wawancara, 
+Studi Pustaka dan Dokumentasi. Hasil dari penelitian ini adalah: (1) Sistem informasi penyewaan 
+kontrakan berbasis website ini dirancang meng gunakan Unified Modeling Language  (UML) dan 
+diprogram menggunakan bahasa pemrograman PHP sehingga dapat mempermudah dan 
+mempercepat pelanggan dalam pencarian  kontrakan. (2) Hasi Implementasi sistem informasi 
+penyewaan kontrakan berbasis website di kabupaten Bulukumba, yaitu dengan adanya website 
+tersebut maka dapat memberikan pelayanan yang cepat terhadap calon pelanggan ketika ingin 
+melakukan penyewaan kontrakan. (3) Hasil pengujian penggunaan sistem dengan 
+menggunakan Likert scale diperoleh skor 89,7% dari 20 responden yaitu sangat positif. 
+  
+Kata kunci : Kontrakan, Penyewaan, Sistem informasi, Website 
+ 
+ABSTRACT 
+This research aims to: (1) Design a website -based rental information system in the Bulukumba 
+city area. (2) Implementing a website-based rental information system in the Bulukumba city 
+area. (3) Knowing the response of users of the website -based rental information system in the 
+Bulukumba city area. The research method used in this research is the System Development Life 
+Cycle (SDLC) method with the Waterfall Model. It has several stages, namely: requirements 
+analysis, design, implementation, testing, and maintenance. The data collection used was: 
+Interviews, Literature Study and Documentation. The results of this research are: (1) This 
+website-based rental information system was designed using the Unified Modeling Language 
+(UML) and programmed using the PHP programming language so that it can make it easier and 
+faster for customers to search for rentals. (2) Result of implementi ng a website -based rental 
+information system in Bulukumba district, that is, with this website, it can provide fast service to 
+potential customers when they want to rent a rental. (3) The results of testing the use of the system 
+using a Likert scale obtained a score of 89.7% from 20 respondents, which is very positive.  
+ 
+Keywords: Renting, Rentals, Information systems, Websites 
+ 
+PENDAHULUAN 
+ Perkembangan ilmu pengetahuan dan teknologi saat ini banyak 
+memberikan kemudahan dalam kehidupan manusia. Seiring den gan 
+perkembangan teknologi maka pemerintah menerbitkan Undang-Undang No.11 
+
+=== PAGE 2 ===
+    
+  
+ 
+ 
+ 
+2 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ Tahun 2019 tentang Sistem Nasional Ilmu Pengetahuan dan Teknologi. yang 
+memberi kebebasan dalam mengembangkan teknologi dari kehidupan manusia, 
+kemajuan teknologi sangat mendorong m anusia untuk berusaha mengatasi 
+masalah yang timbul di sekitarnya. (Dalinama Telaumbanua, 2019)  
+ Teknologi dan informasi saat ini merupakan kebutuhan manusia dalam 
+melakukan berbagai kegiatan, dengan menggunakan piranti teknologi informasi 
+yang tepat, maka akan menghasilkan informasi yang sesuai dengan kebutuhan 
+sehingga keputusan dapat diambil dengan cepat. Penggunaan sistem informasi 
+dalam bisnis sangat dibutuhkan untuk perkembangan, pertukaran informasi 
+secara elektronik ke aplikasi strategi b isnis, seperti pemasaran, penjualan, dan 
+pelayanan pelanggan. Begitu juga dalam bidang properti untuk sewa rumah 
+kontrakan. 
+ Perkembangan sistem informasi yang sangat cepat bisa dimanfaatkan 
+dengan baik melalui banyak hal dalam sistem, namun beberapa pemil ik 
+kontrakan dan calon penyewa usaha sewa rumah kontrakan masih mengalami 
+kesulitan dalam memiliki suatu sistem yang terintegrasi. Banyak diantara 
+mereka masih melakukan pencarian rumah kontrakan secara langsung di 
+kehidupan sehari-hari. Dari segi konsumen, masih harus melakukan penyewaan 
+kontrakan di lokasi tempat pemilik kontrakan berada dan informasi yang 
+terbatas mengenai jenis yang tersedia. 
+ Hasil Observasi pada tanggal 12 Oktober 2023 di beberapa kontrakan di 
+Kabupaten Bulukumba diperoleh informasi b ahwa penyewa kontrakan sulit 
+dalam mendapatkan informasi mengenai kontrakan yang disewakan sehingga 
+membuat penyewa menghabiskan banyak waktu untuk mencari  rumah 
+kontrakan terkadang penyewa tidak mendapatkan informasi yang diinginkan 
+sedangkan penyewa san gat membutuhkan tempat tinggal dengan segera dan 
+kepastian.  
+ Penelitian sebelumnya yaitu Sistem informasi penyewaan kamar berbasis 
+website pada Apartement The Nest yang bertujuan untuk memberikan kemudahan 
+dalam pelayanan kepada pelanggan maupun memudahka n pihak apartement 
+dalam proses pengelolaan data dan memantau kegiatan reservasi kamar melalui 
+website sehingga dapat terkontrol dan memberikan efisiensi dalam kinerja 
+perusahaan Apartement The Nest . Perancangan pada sistem reservasi melewati 
+beberapa tahapan dengan menggunakan metode waterfall yang meliputi System 
+Engineering, 
+Analysis, Design, Coding, Testing dan Maintenance (Muhammad Aldi Rifai, & 
+Yuwan Jumaryadi, 2022).  
+ Penelitian lainnya adalah E-living co sistem informasi website penyewaan 
+rumah tin ggal (kontrakan/kost) di daerah jakarta selatan bertujuan untuk 
+mempermudah sistem kerja di E Living Co , karena sistem yang lama adalah 
+masih berbasis sistem akuntansi, sehingga kurang akurat dalam pencatatan dan 
+kurang efisien, sistem informasi ini akan d ibangun dengan menggunakan 
+metode waterfall (Ahmad Arief Fadilla, Agung Triayudi,dkk, 2022). 
+ Penyewaan rumah kontrakan sangat membutuhkan suatu sistem 
+informasi, seperti pada hal yang lazim kita jumpai saat ini dimana, saat kita 
+
+=== PAGE 3 ===
+    
+  
+ 
+ 
+ 
+3 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ membutuhkan tempat tinggal maka, kita mencari kontrakan mana yang bisa kita 
+pesan, dan beberapa pemilik kontrakan hanya memasang selebaran kertas di 
+jalan terdekat dengan kontrakan yang dimiliki atau memasang info kontrakan di 
+rumah tersebut. Cara ini akan sangat berpengaruh pada f aktor waktu, yaitu 
+dimana pemilik akan menunggu sampai ada pihak atau orang mau menyewa 
+kontrakan, dan calon penyewa harus meninggalkan pekerjaanya untuk mencari 
+kontrakan yang masih kosong, selain faktor waktu juga yaitu faktor biaya. 
+ Dengan latar belaka ng diatas,  penulis ingin membuat sistem informasi 
+sewa rumah kontrakan secara online supaya informasi didapat dengan mudah 
+dan dapat mengetahui lokasi atau alamat mana rumah kontrakan berada. Maka 
+dari itu penulis berinisiatif dan sangat tertarik mengambil judul tentang “Sistem 
+Informasi Penyewaan Kontrakan Berbasis Website Di Kabupaten 
+Bulukumba”. 
+ 
+LANDASAN TEORI 
+1. Sistem Informasi 
+Sistem informasi adalah kombinasi dari teknologi informasi dan aktivitas 
+orang yang menggunakannya untuk mendukung operasi dan manajemen. 
+2. Penyewaan 
+Penyewaan adalah suatu proses atau tindakan dimana  penyewa  setuju 
+untuk menggunakan barang, properti, atau jasa yang dimiliki oleh pihak lain  
+yang disebut sebagai pemilik atau penyewa. 
+3. Kontrakan 
+Kontrakan adalah rumah ya ng disewa oleh pemilik kepada penyewa 
+dengan kesepakatan bersama yang dimana penyewa membayar sejumlah uang 
+sewa kepada pemilik kontrakan. 
+4. Website 
+Website adalah  sistem server Internet  yang mendukung dokumen yang 
+diformat secara khusus atau sekumpulan halaman yang berisi teks atau gambar, 
+yang terhubung serta dapat diakses melalui internet. 
+ 
+METODE PENLITIAN 
+1. Metode Penelitian 
+Metode yang digunakan adalah metode penelitian sistem dengan model 
+waterfall. Waterfall Model adalah sebuah metode pengembangan software yang 
+bersifat sekuensial, metode ini dikenalkan oleh Royce pada tahun 1970 dan pada 
+saat itu disebut sebagai siklus kla sik dan sekarang lebih dikenal dengan 
+sekuensial linier, yaitu pengerjaan dari suatu sistem dilakukan secara berurutan 
+atau bertahap. (Firmansyah, 2019) 
+a. Analisis kebutuhan (Requirement Analysis) 
+Requirement analysis peneliti observasi ke kontrakan yang ada di wilayah 
+kota bulukumba, kemudian peneliti melakukan wawancara dengan pemilik 
+kontrakan untuk mencari tahu permasalahan yang ada pada kontrakan. 
+b. Desain (Design) 
+
+=== PAGE 4 ===
+    
+  
+ 
+ 
+ 
+4 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ Design adalah tahapan dimana peneliti akan membuat rancangan dan 
+desain dari sistem yang dib angun. Pada tahap ini peneliti membuat desain 
+berdasarkan hasil dari analisa kebutuhan untuk kemudian dirancang 
+menjadi use case diagram, activity diagram, class diagram dan sequence 
+diagram. Pada  tahap design peneliti melakukan perancangan  sistem 
+menggunakan UML ( Unifield Model Language ) yang terdiri dari use case 
+diagram, sequence diagram, activity diagram, class diagram  dan me mbuat 
+perancangan antar muka. Pada perancangan peneliti menggunakan visio 
+dalam merancang sistem. 
+c. Penerapan (Implementation) 
+`Implementation adalah tahapan dimana dilakukan pengkodean dari 
+desain sistem yang telah dirancang. Pada tahap implementation peneliti 
+membuat sistem sesuai dengan perancangan  yang telah dibuat peneliti 
+menggunakan sublime text sebagai text  editor  dalam pe mbuatan sistem 
+peneliti menggunakan bahasa pemrograman php dan database MySql. 
+Kemudian agar website bisa diakses oleh orang orang maka website di 
+onlinekan melalui jasa hosting. Hosting dan domain yang digunakan berasal 
+dari rumah web. Rumah web merupakan  layanan yang menyediakan 
+hosting dan domain 
+d. Testing 
+Testing adalah tahapan dimana sub program yang telah dibuat 
+digabungkan menjadi suatu sistem program yang baku. Pada tahap ini 
+dilakukan  pengujian terhadap program peneliti  menggunakan  metode 
+black box testing  sebagai metode pengujian. Black box testing  merupakan 
+pengujian berdasarkan spesifikasi fungsionalitasnya saja. 
+e. Pemeliharaan (Maintenence) 
+Tahapan maintenance merupakan tahap akhir dalam metode waterfall. 
+Perangkat lunak yang sudah jadi, dijalankan serta dilakukan pemeliharaan. 
+Pada tahap ini peneliti mel akukan pemeliharaan terhadap Sistem yaitu 
+dengan memastikan sistem tetap berjalan dengan baik dan dapat digunakan  
+dalam jangka waktu yang lama. 
+a. Analisis Data 
+Perhitungan hasil penilaian responden 
+           Skor Penilaian Responden   
+ Skor Maksimal Penelitian Responden 
+Tabel 1 Tabel Persentase Penilaian Responden 
+ 
+ 
+ 
+ 
+ 
+ 
+    (Sumber: Muliati Syam & Shelly Efwinda, 2018) 
+Nilai Kategori 
+81% < X <  100% Sangat Setuju (SS) 
+61% < X <  80% Setuju (S) 
+41% < X <  60% Netral (N) 
+21% < X <  40% Tidak Setuju (TS) 
+X < 60% Sangat Tidak Setuju  
+(STS) 
+P%  =                                                                 
+= 
+x 100%................(1)                                                                 
+= 
+
+=== PAGE 5 ===
+    
+  
+ 
+ 
+ 
+5 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ 
+b. Perancangan Sistem 
+1) Sistem yang sedang berjalan 
+Calon Penyewa Pemilik Kontrakan 
+  
+Gambar 1 Sistem yang Sedang Berjalan 
+Calon penyewa mendapatkan informasi dari poster/teman. Calon 
+penyewa menghubungi pemilik kontrakan. Pemilik kontrakan memberikan 
+informasi mengenai kontrakan yang tersedia, termasuk harga dan fasilitas. Calon 
+penyewa kontrakan datang ke lokasi rumah kontrakan dan mengecek kontrakan. 
+Kemudian calon penyewa kontrakan melakukan negosiasi. Pemilik kontrakan 
+menyetujui maka ca lon penyewa kontrakan melakukan pembayaran, jika 
+pemilik kontrakan tidak menyetujui maka selesai, kontrakan tidak jadi di sewa. 
+Pemilik kontrakan menerima uang sewa kemudian memberikan kunci rumah 
+kepada penyewa kontrakan. Penyewa kontrakan menerima kunci rumah dan 
+proses selesai. 
+2) Sistem yang diusulkan 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Gambar 2 Sistem yang Diusulkan 
+Admin
+Pemilk
+Kontrakan
+Pencari 
+Kontrakan
+Registrasi
+Login
+Mengolah data 
+kontrakan
+Edit data 
+kontrakan
+Laporan
+Hapus data 
+kontrakan
+Input data 
+kontrakan
+Cari info 
+kontrakan
+Konfirmasi 
+penyewaan
+Pemesanan
+Pembayaran
+<<include>> <<include>>
+<<include>>
+<<include>>
+<<include>>
+<<include>>
+<<include>>
+<<include>>
+<<include>>
+
+=== PAGE 6 ===
+    
+  
+ 
+ 
+ 
+6 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ Adapun rancangan yang diusulkan yaitu Admin harus login kedalam 
+sistem. Apabila tidak login, maka admin tidak dapat mengolah data.Pemilik 
+kontrakan harus login, agar dapat megolah data kontrakan dan mengkonfirmasi 
+penyewaan. Calon penyewa kontrakan registrasi agar dapat melihat menu 
+kontrakan yang berisikan daftar kontrakan.Setelah memilih salah satu 
+kontrakan, calon penyewa kontrakan akan diperlihatkan tampilan detail dari 
+kontrakan tersebut seperti gambar kontrakan, harga, fasilitas, alamat, nomor, 
+dan kontak pemilik.Calon penyewa kontrakan telah memilih kontrakan, 
+kemudian melakukan pemesanan, dan melakukan pembayaran.  Admin dapat 
+mengelola semua data yang ada pada sistem seperti daftar dari kontrakan yang 
+disewakan, informasi detail mengenai kontrakan dan sebagainnya Admin dapat 
+mengelola laporan kontrakan. 
+ 
+HASIL DAN PEMBAHASAN 
+a. Perancangan Sistem 
+1) Sequence Diagram Tampilan Menu Proses Penyewaan Kontrakan 
+Pada menu data pembayaran klik data transaksi kemudian sistem 
+akan memprosesnya lalu sistem akan menampilkan data transaksi. Pada 
+data transaksi tersebut dapat dilakukan input pembayaran dan sistem 
+akan memprosesnya dan sistem akan menyimpannya di dalam database. 
+Pelanggan
+Memilih Kontrakan
+Halaman data orderan 
+Query proses konfirmasi orderan
+ hasil proses konfirmasi orderan
+Halaman Home
+Sistem Database
+Informasi validasi
+Orderan checkout cash
+Orderan checkout TF
+ 
+Gambar 3 Sequence Diagram Input Data Pembayaran 
+2) Sequence Diagram Upload Bukti Pembayaran 
+Pada menu data pembayaran klik button upload bukti pembayaran 
+kemudian masukan bukti pembayaran maka sistem akan memprosesnya 
+dan menyimpannya kedalam database dan sistem akan menampilkan 
+pesan berhasil melakukan upload pembayaran. 
+3) Sequence Diagram Tampilan Menu Konfirmasi Orderan pelanggan 
+Pemilik
+Memilih button orderan
+ID orderan pelanggan
+Query proses konfirmasi orderan
+Hasil konfirmasi orderan dikirim
+Halaman 
+Dashboard
+Sistem Database
+Memilih button orderan
+Konfirmasi orderan pelanggan
+ 
+
+=== PAGE 7 ===
+    
+  
+ 
+ 
+ 
+7 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ Gambar 4 Sequence diagram Tampilan Menu Konfirmasi Orderan 
+4) Sequence Diagram Tampilan Menu Konfirmasi Orderan pelanggan 
+Admin
+Halaman Pemilik
+Menampilkan Laporan Data Orderan
+Login
+Sistem Database
+Klik Menu Transaksi
+Informasi validasi
+Username & password
+Menampilkan Laporan Data Orderan
+ 
+Gambar 5 Sequence Diagram Tampilan Menu Konfirmasi Orderan 
+5) Class Diagram 
+ 
+Gambar 6 Class Diagram 
+b. Implementasi 
+1) Halaman penyewaan kontrakan 
+ 
+Gambar 7 Halaman Penyewaan Kontrakan 
+
+
+=== PAGE 8 ===
+    
+  
+ 
+ 
+ 
+8 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ 2) Orderan 
+ 
+ 
+Gambar 8 Data Orderan 
+3) Implementasi Antar Muka Tampilan Data Orderan Cash 
+ 
+Gambar 9 Data Orderan Cash 
+4) Implementasi Antar Muka Tampilan Data Kontrakan 
+ 
+Gambar 10 Tampilan Data Kontrakan 
+c. Analisis Data Responden 
+
+
+=== PAGE 9 ===
+    
+  
+ 
+ 
+ 
+9 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ Tabel 2 Hasil Data Responden 
+NO Nama Pernyataan Jumlah P1 P2 P3 P4 P5 P6 P7 P8 P9 P10 
+1 R1 5 5 5 5 4 4 4 5 5 5 47 
+2 R2 5 5 5 5 5 4 5 5 4 5 48 
+3 R3 5 4 4 4 4 5 4 5 4 5 44 
+4 R4 5 5 5 5 5 4 4 5 4 5 47 
+5    R5 5 4 4 5 5 4 4 5 4 5 45 
+6 R6 4 4 3 5 4 5 4 5 3 4 41 
+7 R7 4 4 5 4 5 5 4 3 4 3 41 
+8 R8 5 5 5 5 5 4 4 5 4 5 47 
+9 R9 5 4 4 5 5 5 5 5 4 5 47 
+10 R10 5 4 4 5 4 4 5 5 5 5 46 
+11 R11 5 4 4 5 5 4 5 5 4 5 46 
+12 R12 5 4 4 5 5 4 4 5 4 5 45 
+13 R13 4 4 4 5 5 5 5 5 4 4 45 
+14 R14 4 4 4 5 5 4 5 5 5 5 46 
+15 R15 5 4 4 5 5 4 5 5 4 5 46 
+16 R16 4 4 3 3 4 5 4 5 3 4 39 
+17 R17 5 4 4 4 5 5 4 5 4 5 45 
+18 R18 5 4 3 4 5 4 5 5 4 4 43 
+19 R19 5 4 3 5 4 4 4 5 4 4 42 
+20 R20 5 5 5 5 4 4 4 5 5 5 47 
+ 
+Skor maksimal = 200 x 5 (sangat setuju) 
+= 1.000 Skor 
+           Skor Penilaian Responden   
+ Skor Maksimal Penelitian Responden 
+ (Sumber: Muliati Syam & Shelly Efwinda, 2018) 
+ 
+Persentase tiap kategori dapat dihitung sebagai berikut: 
+ 
+P (%) = 
+897
+1.000 x 100% = 0,897 
+ 
+= 89,7% (Sangat Positif) 
+ 
+Tabel 3 Hasil Analisis Rsponden 
+NO Pernyataan Skor 
+5 
+Skor 
+4 
+Skor 
+3 
+Skor 
+2 
+Skor 
+1 
+1 Saya rasa sistem ini 
+mudah digunakan 15 5    
+2 Sistem ini dibuat sesuai 
+dengan kebutuhan 5 15    
+3 Sistem ini mudah untuk 
+dipahami oleh pengguna 6 10 4   
+P%  =                                                                 
+= 
+x 100%                                                                 
+= 
+
+=== PAGE 10 ===
+    
+  
+ 
+ 
+ 
+10 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ 4 Sistem ini membantu 
+pegawai bekerja lebih 
+efektif 
+15 4 1   
+5 Sistem ini dapat 
+beroperasi dengan baik 13 7    
+6 Sistem ini memiliki 
+tampilan yang Menarik 
+serta fitur yang mudah 
+digunakan 
+7 13    
+7 Sistem ini bermanfaat 
+bagi pengguna 8 12    
+8 Sistem ini menghemat 
+waktu ketika digunakan 19  1   
+9 Saya sangat yakin dapat 
+menggunakan sistem ini 4 14 2   
+10 Secara keseluruhan 
+sistem ini memberikan 
+kepuasan bagi pengguna 
+14 5 1   
+Jumlah 106 85 9   
+Rata-Rata Skor 530 340 27   
+Persentase Kelayakan % 89,7 
+ 
+Dari hasil olah data yang diperoleh respon pengguna dengan index 
+89,7% dengan kategori Sangat Positif (SP). 
+ 
+KESIMPULAN 
+Berdasarkan hasil penelitian yang dilakukan pada sistem informasi 
+penyewaan kontrakan berbasis website di Kabupaten Bulukumba ini maka 
+dapat ditarik beberapa kesimpulan yaitu: 
+Sistem Informasi penyewaan kontrakan berbasis website dirancang 
+berdasarkan masalah yang terjadi dalam proses penyewaan kontrakan, dengan 
+menggunakan Unified Modeling Language (UML) antara lain use case diagram, 
+activity diagram, class diagram dan sequence diagram dan bahasa pemrograman 
+php dengan menggunakan database Mysql. Hasil Implementasi sistem informasi 
+penyewaan kontrakan berbasis website di Kabupaten Bulukumba, yaitu dengan 
+adanya website tersebut maka dapat memberikan pelayanan yang cepat 
+terhadap calon pelanggan ketika ingin melakukan penyewaan kontrakan.  Hasil 
+penilaian respon pengguna terhadap sistem informasi penyewaan kontrakan 
+berbasis website di Kabupaten Bulukumba, diperoleh skor 89,7% dari 20 
+responden dengan nilai kategori sangat positif. 
+ 
+ 
+
+=== PAGE 11 ===
+    
+  
+ 
+ 
+ 
+11 | L a j u t e k :  J o u r n a l  o f  I n f o r m a t i c s ,  M u l t i m e d i a ,  A n d  I n f o r m a t i o n  
+ 
+Lajutek : Journal of Informatics, Multimedia, And Information 
+Volume 2 No 2 Tahun 2024 Hal. 1-11 
+ISSN : 2987-7377 
+Doi : 10.61912/lajutek.v2i2.107 
+ DAFTAR PUSTAKA 
+Fadilla, A. A., Triayudi, A., & Mardiani, E. (2022). E-Living Co. Sistem Informasi 
+Web Penyewaan Rumah Tinggal (Kontrakan/Kost) Di Daerah 
+JakartaSelatan. JIPI (Jurnal Ilmiah Penelitian Dan Pembelajaran Informatika) , 
+7(4), 1220–1232. 
+Rifai, M. A., & Jumaryadi, Y. (2022). Sistem Informasi Penyewaan Kamar Berbasis 
+Web Pada Apartement The nest. 12(2), 1–9. 
+Syam, M., & Efwinda, S. (2018). Analisis keterampilan berpikir tingkat tinggi 
+dengan menerapkan model Problem Based Learning (PBL) pada mata 
+kuliah Fisika Dasar di FKIP Universitas Mulawarman. In Prosiding Seminar 
+Nasional Fisika PPs Universitas Negeri Makassar 1(1), 1-5. 
+Telaumbanua, D. (2019). Undang-Undang Republik Indonesia Nomor 11 Tahun 
+2019 tentang Sistem Nasional Ilmu Pengetahuan dan Teknologi. 
+ 

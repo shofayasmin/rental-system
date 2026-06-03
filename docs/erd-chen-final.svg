@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100">
+  <style>
+    .bg { fill: #efefef; }
+    .entity { fill: #fff; stroke: #111; stroke-width: 2; }
+    .rel { fill: #fff; stroke: #111; stroke-width: 2; }
+    .attr { fill: #fff; stroke: #111; stroke-width: 2; }
+    .line { stroke: #111; stroke-width: 2; fill: none; }
+    .label { font: 24px Arial, sans-serif; fill: #111; text-anchor: middle; dominant-baseline: middle; }
+    .small { font: 20px Arial, sans-serif; }
+    .card { font: 22px Arial, sans-serif; font-weight: bold; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="1800" height="1100"/>
+
+  <!-- Entities -->
+  <rect class="entity" x="90" y="120" width="210" height="70"/><text class="label" x="195" y="155">Provinces</text>
+  <rect class="entity" x="90" y="280" width="210" height="70"/><text class="label" x="195" y="315">Regencies</text>
+  <rect class="entity" x="90" y="440" width="210" height="70"/><text class="label" x="195" y="475">Districts</text>
+  <rect class="entity" x="90" y="600" width="210" height="70"/><text class="label" x="195" y="635">Villages</text>
+
+  <rect class="entity" x="610" y="600" width="250" height="70"/><text class="label" x="735" y="635">Properties</text>
+  <rect class="entity" x="1020" y="600" width="260" height="70"/><text class="label" x="1150" y="635">Property_Facility</text>
+  <rect class="entity" x="1450" y="600" width="220" height="70"/><text class="label" x="1560" y="635">Facilities</text>
+
+  <rect class="entity" x="610" y="80" width="210" height="70"/><text class="label" x="715" y="115">Users</text>
+  <rect class="entity" x="610" y="240" width="260" height="70"/><text class="label" x="740" y="275">Rental_Requests</text>
+  <rect class="entity" x="610" y="400" width="230" height="70"/><text class="label" x="725" y="435">Transactions</text>
+
+  <rect class="entity" x="1030" y="240" width="190" height="70"/><text class="label" x="1125" y="275">Contracts</text>
+  <rect class="entity" x="1380" y="240" width="300" height="70"/><text class="label" x="1530" y="275">Contract_Extensions</text>
+
+  <rect class="entity" x="1030" y="80" width="250" height="70"/><text class="label" x="1155" y="115">Conversations</text>
+  <rect class="entity" x="1380" y="80" width="330" height="70"/><text class="label" x="1545" y="115">Conversation_Messages</text>
+
+  <!-- Relationship diamonds -->
+  <polygon class="rel" points="380,155 450,105 520,155 450,205"/><text class="label small" x="450" y="155">Contains</text>
+  <polygon class="rel" points="380,315 450,265 520,315 450,365"/><text class="label small" x="450" y="315">Contains</text>
+  <polygon class="rel" points="380,475 450,425 520,475 450,525"/><text class="label small" x="450" y="475">Contains</text>
+
+  <polygon class="rel" points="390,635 470,585 550,635 470,685"/><text class="label small" x="470" y="635">Locates</text>
+
+  <polygon class="rel" points="900,115 970,65 1040,115 970,165"/><text class="label small" x="970" y="115">Owns</text>
+  <polygon class="rel" points="900,275 970,225 1040,275 970,325"/><text class="label small" x="970" y="275">Generates</text>
+  <polygon class="rel" points="900,435 970,385 1040,435 970,485"/><text class="label small" x="970" y="435">Has</text>
+
+  <polygon class="rel" points="1270,275 1335,225 1400,275 1335,325"/><text class="label small" x="1335" y="275">Extends</text>
+  <polygon class="rel" points="1270,115 1335,65 1400,115 1335,165"/><text class="label small" x="1335" y="115">Has</text>
+
+  <polygon class="rel" points="900,635 960,585 1020,635 960,685"/><text class="label small" x="960" y="635">Has</text>
+  <polygon class="rel" points="1320,635 1385,585 1450,635 1385,685"/><text class="label small" x="1385" y="635">Has</text>
+
+  <polygon class="rel" points="900,195 975,145 1050,195 975,245"/><text class="label small" x="975" y="195">Opens/Handles</text>
+  <polygon class="rel" points="900,355 980,305 1060,355 980,405"/><text class="label small" x="980" y="355">Receives</text>
+
+  <!-- Lines + cardinalities -->
+  <line class="line" x1="300" y1="155" x2="380" y2="155"/><text class="card" x="335" y="145">1</text>
+  <line class="line" x1="520" y1="155" x2="610" y2="115"/><text class="card" x="560" y="130">M</text>
+
+  <line class="line" x1="300" y1="315" x2="380" y2="315"/><text class="card" x="335" y="305">1</text>
+  <line class="line" x1="520" y1="315" x2="610" y2="275"/><text class="card" x="560" y="290">M</text>
+
+  <line class="line" x1="300" y1="475" x2="380" y2="475"/><text class="card" x="335" y="465">1</text>
+  <line class="line" x1="520" y1="475" x2="610" y2="275"/><text class="card" x="565" y="390">M</text>
+
+  <!-- FIXED LOCATES: one continuous solid path -->
+  <line class="line" x1="300" y1="635" x2="390" y2="635"/><text class="card" x="345" y="625">1</text>
+  <line class="line" x1="550" y1="635" x2="610" y2="635"/><text class="card" x="580" y="625">M</text>
+
+  <line class="line" x1="820" y1="115" x2="900" y2="115"/><text class="card" x="860" y="105">1</text>
+  <line class="line" x1="1040" y1="115" x2="1030" y2="115"/><text class="card" x="1035" y="105">M</text>
+
+  <line class="line" x1="870" y1="275" x2="900" y2="275"/><text class="card" x="885" y="265">1</text>
+  <line class="line" x1="1040" y1="275" x2="1030" y2="275"/><text class="card" x="1035" y="265">0..1</text>
+
+  <line class="line" x1="840" y1="435" x2="900" y2="435"/><text class="card" x="870" y="425">1</text>
+  <line class="line" x1="1040" y1="435" x2="725" y2="470"/><text class="card" x="900" y="470">M</text>
+
+  <line class="line" x1="1220" y1="275" x2="1270" y2="275"/><text class="card" x="1245" y="265">1</text>
+  <line class="line" x1="1400" y1="275" x2="1380" y2="275"/><text class="card" x="1390" y="265">M</text>
+
+  <line class="line" x1="1280" y1="115" x2="1270" y2="115"/><text class="card" x="1275" y="105">1</text>
+  <line class="line" x1="1400" y1="115" x2="1380" y2="115"/><text class="card" x="1390" y="105">M</text>
+
+  <line class="line" x1="860" y1="635" x2="900" y2="635"/><text class="card" x="880" y="625">1</text>
+  <line class="line" x1="1020" y1="635" x2="1020" y2="635"/><text class="card" x="1020" y="625">M</text>
+
+  <line class="line" x1="1280" y1="635" x2="1320" y2="635"/><text class="card" x="1300" y="625">1</text>
+  <line class="line" x1="1450" y1="635" x2="1450" y2="635"/><text class="card" x="1450" y="625">M</text>
+
+  <line class="line" x1="820" y1="115" x2="900" y2="195"/><text class="card" x="860" y="155">1</text>
+  <line class="line" x1="1050" y1="195" x2="1030" y2="115"/><text class="card" x="1040" y="155">M</text>
+
+  <line class="line" x1="860" y1="275" x2="900" y2="355"/><text class="card" x="885" y="320">1</text>
+  <line class="line" x1="1060" y1="355" x2="610" y2="635"/><text class="card" x="820" y="500">M</text>
+
+  <!-- id attributes (sample, same style as screenshot) -->
+  <ellipse class="attr" cx="715" cy="40" rx="55" ry="30"/><text class="label small" x="715" y="40">id</text>
+  <line class="line" x1="715" y1="80" x2="715" y2="70"/>
+
+  <ellipse class="attr" cx="735" cy="710" rx="55" ry="30"/><text class="label small" x="735" y="710">id</text>
+  <line class="line" x1="735" y1="670" x2="735" y2="680"/>
+
+  <ellipse class="attr" cx="195" cy="710" rx="55" ry="30"/><text class="label small" x="195" y="710">id</text>
+  <line class="line" x1="195" y1="670" x2="195" y2="680"/>
+
+  <text class="label" x="900" y="1040" style="font-size:32px; font-weight:bold;">ER Diagram - Rental System (Final)</text>
+</svg>

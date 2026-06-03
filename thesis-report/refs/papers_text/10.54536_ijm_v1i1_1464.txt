@@ -1,0 +1,318 @@
+
+
+=== PAGE 1 ===
+Page 
+1
+
+
+=== PAGE 2 ===
+Page 
+2
+International Journal of  
+Metaverse (IJM) 
+A Web-Based Rental House Smart Finder using Rapid Application 
+Development basis for Evaluation of  ISO 205010
+Avegail L. Monteverde1, Joshua James S. Maderazo1,  Keyleen Christine M. Cruz1, NIcko A. Magnaye1*
+Volume 1 Issue 1, Year 2023
+ISSN: 2837-2417 (Online)
+DOI: https://doi.org/10.54536/ijm.v1i1.1464
+https://journals.e-palli.com/home/index.php/ijm
+Article Information ABSTRACT
+Received: March 22, 2023
+Accepted: April 03, 2023
+Published: April 05, 2023
+Businesses including the promotion of  rental properties, utilized the advantage of  using 
+technologies to attract more clients. Most of  them use a website to easily advertised their 
+properties online. Hence, there were lots of  existing system developed to find hotels and 
+apartments online, without considering other affordable rental houses, such as boarding 
+houses and bed spacers. Aside from that, people in Bansud and Bongabong Oriental 
+Mindoro, can’t easily find a rental house with the reason of  lack of  details regarding the 
+location of  each rental house and couldn’t find an affordable rental house immediately.  
+From that, A Web-Based Rental House Smart Finder using Rapid Application Development 
+basis for Evaluation of  ISO 205010 was developed to assist the clients in finding affordable 
+variations of  rental houses such as boarding house, dormitories, hotels and others. The 
+system can also provide necessary information of  specific rental house properties and even 
+gave an alternative option by providing near rental property listings using kilometer distance. 
+The system can also accept reservation request from the clients. On the other hand, the 
+Rapid Application Development was used in building the project for quick continuous 
+development and testing during the project’s software development lifecycle. The RAD 
+strategy allows to investigate a working model as in front of  schedule as could be normal 
+considering the present situation if  the frameworks meet the necessities required, and 
+propose imperative changes. The ISO/IEC 25010 software quality standards were applied 
+in the evaluation to determine the functional suitability, performance efficiency, usability, 
+reliability, security, maintainability and portability of  the system. The overall mean of  the 
+ISO/IEC 25010 evaluation result was 3.67, which was regarded as very effective, indicating 
+that the evaluators were satisfied by giving positive feedback. Some of  the evaluators 
+suggested to have a mobile application for accessibility.  
+Keywords
+Smart Finder, Rental, Rental 
+House, Rad, Iso/Iec 25010
+INTRODUCTION
+The number of  entrepreneurs has grown tremendously in 
+recent years (Acs et al., 2018). The competition platform 
+has also changed from traditional-based to digital-based, 
+through utilization of  modern technological facilities to 
+capture a bigger market share (Koe & Sakir, 2020). In 
+the high growth of  internet users, e-comme commerce 
+seems to be a promising business opportunity as it offers 
+convenience in which client can access the information 
+they need anytime and anywhere and even gave businesses 
+an opportunity to represent themselves in ways they want 
+to be seen. As the number of  internet users continues 
+to rise, e-commerce businesses have more opportunities 
+for growth. With that, to reach people around the globe, 
+industries such as hotels, apartments, dormitories, rental 
+houses, and rooms for rent utilize the advantage of  using 
+technologies. However, individuals require a place to stay 
+at all times, from businesses who travel from one area to 
+another in the course of  their company to students who 
+study away from home (Santos, 2018). Clients looking 
+for temporary place for settlement rapidly growing. Due 
+to that, the strong demand for accommodation facilities 
+on the back of  tourism growth in the Philippines has 
+grown, in which the hospitality industry’s capacity is 
+seen lacking to host both the foreign and local visitors as 
+stated by (Abad, 2017). There is also a lack of  on-campus 
+accommodation in most college areas, forcing students 
+to find an apartment outside near the school (Maughan, 
+2016). People may have to spend time as feasible with 
+their own sightseeing to know something about the rental 
+house closest to the institution where they wish to live. 
+When it comes to choosing a dormitory or boarding 
+house for university students in the Philippines, location 
+and price are the two most important factors (Curaza, 
+2021) which is also a difficult factor considered in finding 
+rental house in Bansud and Bongabong according to 
+the local survey conducted. People in the target area 
+can’t easily find a rental house with the reason of  lack 
+of  details regarding the location of  each rental house 
+and couldn’t find an affordable rental house immediately. 
+From that, finding rental houses is considered as 
+challenging task to do especially when a certain client 
+doesn’t know more about a specific place. Aside from 
+that, prices and amenities of  the rental houses is bearing 
+also for the clients to consider wherein a system would 
+fulfill their necessities. Furthermore, according to the 
+homeowners based on the prior survey, an online site 
+must be needed to promote their rental houses to gain 
+much profits since the other websites only focused on 
+hotels. Due to that, a Web-Based Rental House Smart 
+Finder using Rapid Application Development basis 
+for Evaluation of  ISO 205010  has been developed to 
+1 Mindoro State University, Philippines
+* Corresponding author’s e-mail: nickomagnaye15@gmail.com
+
+=== PAGE 3 ===
+Page 
+3
+https://journals.e-palli.com/home/index.php/ijm
+. Int. J. Metaverse 1(1) 01-04, 2023
+simplify the process of  searching rental houses for clients 
+as well as advertising rental properties of  the landlords 
+to attract a wider range of  prospective tenants with a 
+faster response time in between landlord and the client 
+(Payusan et al., 2016). In addition, the system also utilized 
+Google Map. Incorporating maps are also convenient to 
+know the specific location and commonly used by the 
+user in transportation to save time and money (Ramos 
+et al., 2018). Important information of  the rental house 
+owners including contact numbers, address, near popular 
+landmarks location, rent amount per hours/month/
+night, amenities, sample images, and reservation details 
+was encoded in the system. Moreover, the system was 
+for commercialization purposes that uses Business-
+to-Consumer (B2C) model in able to provide direct 
+reservation from a rental property to many potential 
+online consumers (Turban et al., 2017).
+Objectives of  the Study
+Generally, the study aimed to design and develop an 
+interactive web-based rental house smart finder. 
+Specifically, the study aimed to:
+1. Locate rental houses around Bongabong and Bansud. 
+2. Provide detailed information of  the rental houses 
+including the amenities, images, location, near popular 
+landmarks, rental house type, prices, house rules and 
+descriptions.
+3. Accept reservation request from the clients through 
+the system. 
+4. Test and evaluate the system using ISO/IEC 25010 
+software quality standard.
+Figure 1: Rapid Application Development (RAD)
+(Biemba & Nyirenda, 2019)
+METHOD
+Analysis and Quick Design
+The data needed in the system as well as the materials 
+and budget to build Web-Based Rental House Smart 
+Finder using Rapid Application Development basis for 
+Evaluation of  ISO 205010 project including the rental 
+house details, necessary features, google map API, and 
+plugins has been analyzed. The proponents analyzed the 
+data through survey and search for related literatures/
+systems that can serve as a guide to develop the project. 
+All the details gathered from Clients and Landlords has 
+been gathered and summarized to proceed with quick 
+design process. Moreover, the software tools used such 
+as WordPress, Google Map API, and plugins has been 
+prepared to proceed to the next phase.
+The design of  the Web-Based Rental House Smart 
+Finder using Rapid Application Development basis for 
+Evaluation of  ISO 205010  is presented in Figure 2. 
+The figure comprises three stages namely Input, Process 
+and Web-Based Rental House Smart Finder using Rapid 
+Application Development basis for Evaluation of  ISO 
+205010  Output. 
+Prototype Cycle
+In the next phase, the prototype cycle has been 
+performed. There are three cycles used to create a 
+system, it includes building, demonstrating and refining 
+the prototype. In building phase, it begins with coding 
+process, applied the prepared plugins, and integrated 
+Google Map API in the system. Then created some 
+fields for the details specifically the rental house name, 
+descriptions, amenities, price, images and other important 
+data. The next phase in prototype cycle is demonstrating 
+the developed system. The system has been deployed to 
+the target respondents and the features and flow of  a 
+website has been demonstrated. The landlords as well as 
+the clients encountered some minor error and suggested 
+some additional features and fields including addons, 
+maximum number of  guests and popular landmarks to 
+satisfy their needs in terms of  finding rental house. After 
+that, suggestions of  the target users was used to refine 
+the system.
+Testing
+The Software quality Standard used to test and evaluate 
+the system is ISO/IEC 25010 standard. There are lots 
+of  testing procedures, but Beta testing has been used 
+to ensure that users can test the system’s functionality 
+and gain suggestions. The evaluation of  the system has 
+been started after testing the project website. Landlords/
+Homeowners, clients, and IT practitioners analyzed and 
+evaluated the system and even provide a positive feedback 
+and suggestions/comments. After that, the suggestions 
+from the three types of  respondents are summarized, and 
+proceed to the application of  initial changes.
+Implementation
+The project presented to the clients after following the 
+suggestions. The system was advertised through the use 
+of  social media by creating a Facebook page and asked 
+the clients and landlords to implement it to others. The 
+follow up suggestions based on the evaluation has been 
+successfully applied except of  having a mobile application 
+of  the system.
+RESULTS AND DISCUSSION
+The study Web-Based Rental House Smart Finder using 
+Rapid Application Development basis for Evaluation of  
+ISO 205010  is a project that provides a guide for clients 
+to find rental houses easier and conveniently. The system 
+is a useful tool for finding rental homes in the Bansud 
+and Bongabong areas. Furthermore, the system employs 
+
+=== PAGE 4 ===
+Page 
+4
+https://journals.e-palli.com/home/index.php/ijm
+. Int. J. Metaverse 1(1) 01-04, 2023
+a rule-based algorithm to filter out the users’ preferences. 
+Any web browser can access the project as well. The 
+ISO 25010 software quality standards were applied in the 
+evaluation to rate the functional suitability, performance 
+efficiency, usability, reliability, security, portability and 
+maintainability of  the system. The system simplifies 
+the process of  looking for a rental home. It also lessens 
+the time consumed in finding rental houses within the 
+areas and quickly access the information needed to rent a 
+rental home. In evaluating the system, evaluation sheets 
+were distributed to fifty (50) evaluators, ten (10) I.T 
+practitioners, ten (10) landlords/home owners, and thirty 
+(30) clients who used the system.  
+All the suggestions and recommendations in the 
+evaluation form were gathered and used to refine the 
+system. Based on the conducted evaluation, the Web-
+Based Rental House Smart Finder using Rapid Application 
+Development basis for Evaluation of  ISO 205010  
+project is functional, usable, secured, and maintainable 
+for the respondents. The evaluation result in all criteria 
+of  ISO/IEC 25010 with the overall mean of  3.67 and 
+has been interpreted as very effective. As result of  the 
+development of  the system, the developers found out 
+that the evaluation according to the system performance 
+is very effective and the evaluators were satisfied. In the 
+future, the system must be used as basis of  the study and 
+must be improve in terms of  locating rental houses. 
+Table 1: Summary of  Evaluation Results in ISO/IEC 
+25010
+Criteria Mean Rank Verbal 
+Interpretation
+Functional 
+Suitability 
+3.70 2.5 Very Effective
+Performance 
+Efficiency 
+3.59 7 Very Effective
+Usability 3.65 5.5 Very Effective
+Reliability 3.65 5.5 Very Effective
+Security 3.70 2.5 Very Effective
+Maintainability 3.71 1 Very Effective
+Portability 3.67 4 Very Effective
+Overall Mean 3.67 Very Effective
+CONCLUSION
+Based on the summary of  findings and objectives of  the 
+report the following conclusions were drawn.
+1. This system locates rental houses around Bongabong 
+and Bansud using the filtering categories provided by the 
+system.
+2. This system provides important data of  a rental house 
+including amenities, rental house name, location through 
+google map, images, pricing categories, descriptions, near 
+popular landmark, house rules, and type of  rental house.
+3. This system accepts reservation from the clients by 
+adding fields for reservation details. 
+4. The system is usable, functional, secured, reliable, 
+portable, maintainable, and efficient to use since it 
+satisfies the evaluators of  the system
+RECOMMENDATION
+Based on the Conclusions, the Following 
+Recommendations Were Drawn
+1. This project should be recommended to the 
+clients and homeowners/landlords around Bansud and 
+Bongabong to simplify finding and locating rental houses 
+for clients as well as promoting the rental homes of  the 
+homeowners/landlords; 
+2. This project must be used also by the parents to keep 
+a track on the location of  the specific rental house of  
+their son/daughter; 
+3. This project must be used by the homeowners/
+landlords to promote their rental houses in order to 
+attract clients.
+4. The future researchers must conduct the same study 
+and should add cashless payments like GCash, since the 
+system only accepts Cash on Meet Up payment only. 
+5. The future researchers must create a mobile 
+application for the system.
+REFERENCES
+Acs, Z. J., Estrin, S., Mickiewicz, T. & Szerb, L. (2018). 
+Entrepreneurship, institutional economics, and 
+economic growth: an ecosystem perspective. Small 
+Bus Econ., 51,  501-514. https://doi.org/10.1007/
+s11187-018-0013-9
+Curaza N., (2021). Boarding House Finder Thesis. 
+Retrieved from https://itsourcecode.com/ 
+Payusan, GM. B, Maderazo, C. V . & Ceniza, A. M. (2016). 
+A Decision Support System in Facilitating properties 
+for Rent using analytic Hierarchy Process and Goal 
+programming. Far East and Journal of  Electronics and 
+Communications., 2, 1-8. https://dx.doi.org/10.17654/
+ECSV216001
+Ramos A. A., Matienzo K. C., Casunuran M.D., Nervida 
+C.M. & Jose M.S. (2018). E-vision: A Campus 
+Locator Map Mobile Application using A*Algorithm. 
+International Journal of  Computer Science and Software 
+Engineering, 7(1), 6-11.
+Santos, G. (2018). Sustainability and Shared Mobility 
+Models. Sustainability., 10 (9), 3194. htpps://doi.
+org/10.3390/su10093194
+Turban, E., Whiteside, J., King, D. & Outland, J. (2017). 
+Introduction to Electronic Commerce and Social 
+Commerce. Springer International Publishing AG. 
+htpps://doi.org/10.1007/978-3-319-50091-1
