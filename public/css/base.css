@@ -1,0 +1,26 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+.page {
+    width: 80%;
+    margin: 20px auto;
+    flex: 1;
+}
+
+/* :root {
+    --nav-bg: #5d3470;        
+    --nav-text: #ffccf7;  
+    --nav-hover: #e4cdeaf4; 
+}
+
+.navbar .nav-link:hover {
+    color: var(--nav-hover) !important;
+} */
