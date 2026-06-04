@@ -319,8 +319,8 @@
                             <div class="tenant-request-actions">
                                 <div class="tenant-request-actions-fixed">
                                     @if($r)
-                                        <a href="/messages/{{ $r->id }}" class="btn btn-info btn-sm">Chat Agent</a>
                                         <a href="/tenant/requests/{{ $r->id }}" class="btn btn-outline-primary btn-sm">Rental Detail</a>
+                                        <a href="/messages/{{ $r->id }}" class="btn btn-info btn-sm">Chat Agent</a>
                                     @endif
                                 </div>
                                 <div class="tenant-request-actions-state">

@@ -11,12 +11,20 @@
     }
     .agent-requests-tools .search-wrap {
         position: relative;
-        width: 360px;
-        min-width: 320px;
-        max-width: 360px;
+        flex: 1 1 320px;
+        min-width: 240px;
+        width: 100%;
+    }
+    .agent-requests-tools .search-wrap .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
     }
     .agent-requests-tools .search-wrap .form-control {
         padding-left: 38px;
+        max-width: 100%;
     }
 </style>
 
@@ -58,7 +66,13 @@
         </div>
     @else
         <div class="agent-requests-tools">
-            <form method="GET" action="/agent/contracts" class="search-wrap" style="max-width:360px;width:100%">
+            <form method="GET" action="/agent/contracts" class="search-wrap" style="width:100%">
+                <img src="{{ asset('icons/search-icon.svg') }}"
+                     alt=""
+                     width="18"
+                     height="18"
+                     class="search-icon"
+                     aria-hidden="true">
                 <input type="text"
                        name="q"
                        id="contracts-search"

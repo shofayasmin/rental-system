@@ -16,6 +16,8 @@
 /public/build
 /public/hot
 /public/storage
+/docs
+/thesis-report
 /storage/*.key
 /storage/pail
 /vendor

@@ -68,22 +68,62 @@ class TenantContractController extends Controller
                 ->count(),
         ];
 
+        $search = trim((string) $request->query('q', ''));
+
         $contracts = Transaction::query()
             ->with([
                 'property:id,title,address,regency_id,district_id,rent_price,agent_id',
                 'property.regency:id,name',
                 'property.district:id,name',
-                'contract:id,rental_request_id,status,start_date,end_date,monthly_rent,total_price',
+                'property.agent:id,name',
+                'contractExtension:id,old_end_date,new_end_date,monthly_rent_snapshot,amount,status',
+                'contract' => function ($contractQuery) {
+                    $contractQuery->select([
+                        'contracts.id',
+                        'contracts.rental_request_id',
+                        'contracts.status',
+                        'contracts.start_date',
+                        'contracts.end_date',
+                        'contracts.monthly_rent',
+                        'contracts.total_price',
+                    ]);
+                },
                 'contract.rentalRequest:id,tenant_id,property_id,status,created_at,awaiting_payment_at,payment_due_at,paid_at,rejected_at,cancelled_at',
-                'contract.latestExtension:id,contract_id,status,amount,payment_due_at,old_end_date,new_end_date,monthly_rent_snapshot',
+                'contract.latestExtension' => function ($extensionQuery) {
+                    $extensionQuery->select([
+                        'contract_extensions.id',
+                        'contract_extensions.contract_id',
+                        'contract_extensions.status',
+                        'contract_extensions.amount',
+                        'contract_extensions.payment_due_at',
+                        'contract_extensions.old_end_date',
+                        'contract_extensions.new_end_date',
+                        'contract_extensions.monthly_rent_snapshot',
+                    ]);
+                },
             ])
             ->where('tenant_id', Auth::id())
             ->whereIn('type', ['initial_rent', 'extension_rent'])
             ->where('status', 'paid')
-            ->orderByDesc('updated_at')
-            ->orderByDesc('id')
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereHas('property', function ($propertyQuery) use ($search) {
+                    $propertyQuery->where('title', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhereHas('regency', function ($regencyQuery) use ($search) {
+                            $regencyQuery->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('district', function ($districtQuery) use ($search) {
+                            $districtQuery->where('name', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('agent', function ($agentQuery) use ($search) {
+                            $agentQuery->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->orderBy('updated_at')
+            ->orderBy('id')
             ->get();
 
-        return view('tenant.contracts.index', compact('contracts', 'tab', 'tabCounts'));
+        return view('tenant.contracts.index', compact('contracts', 'tab', 'tabCounts', 'search'));
     }
 }

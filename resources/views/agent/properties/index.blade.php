@@ -20,36 +20,247 @@
     $toLetCount = $properties->where('status', 'to-let')->count();
     $maintenanceCount = $properties->where('status', 'maintenance')->count();
     $rentedCount = $properties->where('status', 'rented')->count();
+    $sortOptions = [
+        'newest' => 'Newest',
+        'oldest' => 'Oldest',
+        'price_desc' => 'Price: High to Low',
+        'price_asc' => 'Price: Low to High',
+        'area_desc' => 'Area: Largest',
+        'area_asc' => 'Area: Smallest',
+    ];
+    $statusOptions = [
+        'to-let' => 'To Let',
+        'rented' => 'Rented',
+        'maintenance' => 'Maintenance',
+    ];
+    $queryUrl = function (array $overrides = []) {
+        $query = request()->query();
+        unset($query['page']);
+
+        foreach ($overrides as $key => $value) {
+            if ($value === null || $value === '') {
+                unset($query[$key]);
+            } else {
+                $query[$key] = $value;
+            }
+        }
+
+        return url('/agent/properties') . ($query ? '?' . http_build_query($query) : '');
+    };
+    $filterChips = [];
+    $addChip = function (string $label, string $key, ?string $value = null) use (&$filterChips, $queryUrl) {
+        if ($value === null || $value === '') {
+            return;
+        }
+
+        $filterChips[] = [
+            'label' => $label . ': ' . $value,
+            'url' => $queryUrl([$key => null]),
+        ];
+    };
+
+    $addChip('Search', 'q', $search);
+    if ($selectedSort !== 'newest') {
+        $filterChips[] = [
+            'label' => 'Sort: ' . ($sortOptions[$selectedSort] ?? $selectedSort),
+            'url' => $queryUrl(['sort' => 'newest']),
+        ];
+    }
+    $addChip('Status', 'status', $statusOptions[$selectedStatus] ?? null);
+    $addChip('Province', 'province_id', optional($provinces->firstWhere('id', (int) $selectedProvinceId))->name);
+    $addChip('Regency', 'regency_id', optional($regencies->firstWhere('id', (int) $selectedRegencyId))->name);
+    $addChip('District', 'district_id', optional($districts->firstWhere('id', (int) $selectedDistrictId))->name);
+    $addChip('Village', 'village_id', optional($villages->firstWhere('id', (int) $selectedVillageId))->name);
+    $addChip('Min Price', 'min_price', $selectedMinPrice);
+    $addChip('Max Price', 'max_price', $selectedMaxPrice);
+    $addChip('Min Area', 'min_area', $selectedMinArea);
+    $addChip('Max Area', 'max_area', $selectedMaxArea);
+    $addChip('Min Bedrooms', 'min_bedrooms', $selectedMinBedrooms);
+    $addChip('Max Bedrooms', 'max_bedrooms', $selectedMaxBedrooms);
+    $addChip('Min Bathrooms', 'min_bathrooms', $selectedMinBathrooms);
+    $addChip('Max Bathrooms', 'max_bathrooms', $selectedMaxBathrooms);
 @endphp
 
 <style>
+    .property-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: nowrap;
+        margin-bottom: .75rem;
+    }
     .property-toolbar-controls {
         display: flex;
         align-items: center;
         gap: .5rem;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         justify-content: flex-end;
+        margin-left: auto;
     }
     .property-toolbar-sort {
-        min-width: 170px;
+        min-width: 214px;
+        border-color: #0d6efd;
+        color: #0d6efd;
+        font-weight: 600;
+        border-radius: 999px;
     }
     .property-toolbar-search {
-        min-width: 260px;
-        width: 260px;
+        min-width: 295px;
+        width: 295px;
+        position: relative;
+    }
+    .property-toolbar-search-input {
+        padding-left: 2.4rem;
+        padding-right: 1rem;
+        position: relative;
+        z-index: 1;
+        background: #fff;
+        border-radius: 999px;
+    }
+    .property-toolbar-search-overlay {
+        position: absolute;
+        left: 2.4rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        pointer-events: none;
+        transition: opacity .15s ease, transform .15s ease;
+        z-index: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: calc(100% - 3.5rem);
+        font-size: .95rem;
+    }
+    .property-toolbar-search-icon {
+        position: absolute;
+        left: .9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1.05rem;
+        height: 1.05rem;
+        pointer-events: none;
+        z-index: 2;
+        opacity: .72;
+    }
+    .property-toolbar-search.has-value .property-toolbar-search-overlay,
+    .property-toolbar-search:focus-within .property-toolbar-search-overlay {
+        opacity: 0;
+        transform: translateY(-50%) scale(.98);
     }
     .property-filter-toggle {
         white-space: nowrap;
+        border-color: #0d6efd;
+        color: #0d6efd;
+        font-weight: 600;
+        border-radius: 999px;
+        min-width: 128px;
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        padding-inline: 1rem;
+    }
+    .property-toolbar-action-icon {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
+    }
+    .property-toolbar-add {
+        white-space: nowrap;
+        padding-inline: 1rem;
+        border-radius: 999px;
+        min-width: 128px;
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+    }
+    .property-toolbar-add-icon {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
     }
     .property-filter-panel {
         border: 1px solid #dee2e6;
         border-radius: 14px;
         background: #fff;
+        overflow: hidden;
+    }
+    .property-filter-heading {
+        background: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: .85rem 1rem;
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+    .property-filter-body {
+        padding: 1rem;
+    }
+    .property-filter-group {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 1rem;
+        height: 100%;
+        background: #fff;
+    }
+    .property-filter-group-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    .range-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: .75rem;
+        align-items: center;
+    }
+    .active-filter-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        margin-bottom: 1rem;
+    }
+    .active-filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .45rem;
+        border: 1px solid #bfdbfe;
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-radius: 999px;
+        padding: .35rem .7rem;
+        font-size: .9rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .active-filter-chip:hover {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+    .active-filter-chip .chip-close {
+        font-size: 1rem;
+        line-height: 1;
+    }
+    .clear-filter-chip {
+        border-color: #dee2e6;
+        background: #fff;
+        color: #6c757d;
     }
     @media (max-width: 768px) {
+        .property-toolbar {
+            flex-wrap: wrap;
+        }
+        .property-toolbar-controls {
+            flex-wrap: wrap;
+            width: 100%;
+        }
         .property-toolbar-sort,
         .property-toolbar-search {
             width: 100%;
             min-width: 0;
+        }
+        .property-filter-toggle,
+        .property-toolbar-add {
+            width: 100%;
         }
     }
     .agent-property-card {
@@ -89,7 +300,7 @@
 </style>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <div class="property-toolbar">
         <div>
             <h2 class="mb-1">My Properties</h2>
             <div class="text-muted small">
@@ -101,21 +312,42 @@
         </div>
         <div class="property-toolbar-controls">
             <form method="GET" action="{{ url('/agent/properties') }}" class="property-toolbar-search">
+                @foreach(request()->except(['q', 'page']) as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
+                <img src="{{ asset('icons/search-icon.svg') }}"
+                     alt=""
+                     aria-hidden="true"
+                     class="property-toolbar-search-icon">
+                <span class="property-toolbar-search-overlay" aria-hidden="true">Search...</span>
                 <input type="text"
                        name="q"
-                       class="form-control"
+                       class="form-control property-toolbar-search-input"
                        value="{{ $search }}"
-                       placeholder="Search properties...">
+                       placeholder=" "
+                       aria-label="Search properties">
             </form>
 
-            <select class="form-select property-toolbar-sort" name="sort" form="agent-property-filter-form">
-                <option value="newest" @selected($selectedSort === 'newest')>Newest</option>
-                <option value="oldest" @selected($selectedSort === 'oldest')>Oldest</option>
-                <option value="price_desc" @selected($selectedSort === 'price_desc')>Price: High to Low</option>
-                <option value="price_asc" @selected($selectedSort === 'price_asc')>Price: Low to High</option>
-                <option value="area_desc" @selected($selectedSort === 'area_desc')>Area: Largest</option>
-                <option value="area_asc" @selected($selectedSort === 'area_asc')>Area: Smallest</option>
-            </select>
+            <div class="dropdown">
+                <button class="btn btn-outline-primary property-filter-toggle property-toolbar-sort dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <img src="{{ asset('icons/sort-icon.svg') }}" alt="" aria-hidden="true" class="property-toolbar-action-icon">
+                    Sort : {{ $sortOptions[$selectedSort] ?? 'Newest' }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @foreach($sortOptions as $sortValue => $sortLabel)
+                        <li>
+                            <button class="dropdown-item {{ $selectedSort === $sortValue ? 'active' : '' }}"
+                                    type="button"
+                                    data-sort-value="{{ $sortValue }}">
+                                {{ $sortLabel }}
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
 
             <button class="btn btn-outline-secondary property-filter-toggle"
                     type="button"
@@ -123,98 +355,116 @@
                     data-bs-target="#propertyFilterPanel"
                     aria-expanded="false"
                     aria-controls="propertyFilterPanel">
+                <img src="{{ asset('icons/filter-icon.svg') }}" alt="" aria-hidden="true" class="property-toolbar-action-icon">
                 Filters
             </button>
 
-            <a href="/agent/properties/create" class="btn btn-primary">+ Add Property</a>
+            <a href="/agent/properties/create" class="btn btn-primary property-toolbar-add">
+                <img src="{{ asset('icons/add-prop-icon.svg') }}" alt="" aria-hidden="true" class="property-toolbar-add-icon">
+                Add Property
+            </a>
         </div>
     </div>
 
+    @if(count($filterChips) > 0)
+        <div class="active-filter-chips">
+            @foreach($filterChips as $chip)
+                <a href="{{ $chip['url'] }}" class="active-filter-chip">
+                    <span>{{ $chip['label'] }}</span>
+                    <span class="chip-close" aria-hidden="true">&times;</span>
+                </a>
+            @endforeach
+            @if(count($filterChips) > 1)
+                <a href="{{ url('/agent/properties') }}" class="active-filter-chip clear-filter-chip">Clear all</a>
+            @endif
+        </div>
+    @endif
+
     <div class="collapse mb-4" id="propertyFilterPanel" data-has-active-filters="{{ request()->hasAny(['status', 'province_id', 'regency_id', 'district_id', 'village_id', 'min_price', 'max_price', 'min_area', 'max_area', 'min_bedrooms', 'max_bedrooms', 'min_bathrooms', 'max_bathrooms']) ? '1' : '0' }}">
-        <div class="property-filter-panel p-3">
+        <div class="property-filter-panel">
+            <div class="property-filter-heading">Filter Properties</div>
             <form id="agent-property-filter-form" method="GET" action="{{ url('/agent/properties') }}">
                 <input type="hidden" name="q" value="{{ $search }}">
-                <div class="row g-3">
-                    <div class="col-12 col-md-4">
-                        <label class="form-label">Status</label>
-                        <select name="status" class="form-select">
-                            <option value="">All statuses</option>
-                            <option value="to-let" @selected($selectedStatus === 'to-let')>To Let</option>
-                            <option value="rented" @selected($selectedStatus === 'rented')>Rented</option>
-                            <option value="maintenance" @selected($selectedStatus === 'maintenance')>Maintenance</option>
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label class="form-label">Province</label>
-                        <select id="province_id" name="province_id" class="form-select">
-                            <option value="">All provinces</option>
-                            @foreach($provinces as $province)
-                                <option value="{{ $province->id }}" @selected((string) $selectedProvinceId === (string) $province->id)>{{ $province->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label class="form-label">Regency / City</label>
-                        <select id="regency_id" name="regency_id" class="form-select">
-                            <option value="">All regencies / cities</option>
-                            @foreach($regencies as $regency)
-                                <option value="{{ $regency->id }}" @selected((string) $selectedRegencyId === (string) $regency->id)>{{ $regency->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label class="form-label">District</label>
-                        <select id="district_id" name="district_id" class="form-select">
-                            <option value="">All districts</option>
-                            @foreach($districts as $district)
-                                <option value="{{ $district->id }}" @selected((string) $selectedDistrictId === (string) $district->id)>{{ $district->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <label class="form-label">Village</label>
-                        <select id="village_id" name="village_id" class="form-select">
-                            <option value="">All villages</option>
-                            @foreach($villages as $village)
-                                <option value="{{ $village->id }}" @selected((string) $selectedVillageId === (string) $village->id)>{{ $village->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Min Price</label>
-                        <input type="number" name="min_price" class="form-control" value="{{ $selectedMinPrice }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Max Price</label>
-                        <input type="number" name="max_price" class="form-control" value="{{ $selectedMaxPrice }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Min Area</label>
-                        <input type="number" name="min_area" class="form-control" value="{{ $selectedMinArea }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Max Area</label>
-                        <input type="number" name="max_area" class="form-control" value="{{ $selectedMaxArea }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Min BR</label>
-                        <input type="number" name="min_bedrooms" class="form-control" value="{{ $selectedMinBedrooms }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Max BR</label>
-                        <input type="number" name="max_bedrooms" class="form-control" value="{{ $selectedMaxBedrooms }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Min BA</label>
-                        <input type="number" name="min_bathrooms" class="form-control" value="{{ $selectedMinBathrooms }}" min="0">
-                    </div>
-                    <div class="col-6 col-md-2">
-                        <label class="form-label">Max BA</label>
-                        <input type="number" name="max_bathrooms" class="form-control" value="{{ $selectedMaxBathrooms }}" min="0">
-                    </div>
-                    <div class="col-12 d-flex justify-content-end gap-2 mt-2">
-                        <a href="{{ url('/agent/properties') }}" class="btn btn-outline-secondary">Reset</a>
-                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <div class="property-filter-body">
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-4">
+                            <div class="property-filter-group">
+                                <div class="property-filter-group-title">Location</div>
+                                <label class="form-label">Province</label>
+                                <select id="province_id" name="province_id" class="form-select mb-2">
+                                    <option value="">All provinces</option>
+                                    @foreach($provinces as $province)
+                                        <option value="{{ $province->id }}" @selected((string) $selectedProvinceId === (string) $province->id)>{{ $province->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label class="form-label">Regency / City</label>
+                                <select id="regency_id" name="regency_id" class="form-select mb-2">
+                                    <option value="">All regencies / cities</option>
+                                    @foreach($regencies as $regency)
+                                        <option value="{{ $regency->id }}" @selected((string) $selectedRegencyId === (string) $regency->id)>{{ $regency->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label class="form-label">District</label>
+                                <select id="district_id" name="district_id" class="form-select mb-2">
+                                    <option value="">All districts</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{ $district->id }}" @selected((string) $selectedDistrictId === (string) $district->id)>{{ $district->name }}</option>
+                                    @endforeach
+                                </select>
+                                <label class="form-label">Village</label>
+                                <select id="village_id" name="village_id" class="form-select">
+                                    <option value="">All villages</option>
+                                    @foreach($villages as $village)
+                                        <option value="{{ $village->id }}" @selected((string) $selectedVillageId === (string) $village->id)>{{ $village->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="property-filter-group">
+                                <div class="property-filter-group-title">Price &amp; Status</div>
+                                <label class="form-label">Price</label>
+                                <div class="range-row">
+                                    <input type="number" name="min_price" class="form-control" value="{{ $selectedMinPrice }}" min="0" placeholder="Min">
+                                    <span>&mdash;</span>
+                                    <input type="number" name="max_price" class="form-control" value="{{ $selectedMaxPrice }}" min="0" placeholder="Max">
+                                </div>
+                                <label class="form-label mt-3">Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="">All statuses</option>
+                                    @foreach($statusOptions as $statusValue => $statusLabel)
+                                        <option value="{{ $statusValue }}" @selected($selectedStatus === $statusValue)>{{ $statusLabel }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="property-filter-group">
+                                <div class="property-filter-group-title">Area &amp; Rooms</div>
+                                <label class="form-label">Land Area (m²)</label>
+                                <div class="range-row mb-2">
+                                    <input type="number" name="min_area" class="form-control" value="{{ $selectedMinArea }}" min="0" placeholder="Min">
+                                    <span>&mdash;</span>
+                                    <input type="number" name="max_area" class="form-control" value="{{ $selectedMaxArea }}" min="0" placeholder="Max">
+                                </div>
+                                <label class="form-label">Bedrooms</label>
+                                <div class="range-row mb-2">
+                                    <input type="number" name="min_bedrooms" class="form-control" value="{{ $selectedMinBedrooms }}" min="0" placeholder="Min">
+                                    <span>&mdash;</span>
+                                    <input type="number" name="max_bedrooms" class="form-control" value="{{ $selectedMaxBedrooms }}" min="0" placeholder="Max">
+                                </div>
+                                <label class="form-label">Bathrooms</label>
+                                <div class="range-row">
+                                    <input type="number" name="min_bathrooms" class="form-control" value="{{ $selectedMinBathrooms }}" min="0" placeholder="Min">
+                                    <span>&mdash;</span>
+                                    <input type="number" name="max_bathrooms" class="form-control" value="{{ $selectedMaxBathrooms }}" min="0" placeholder="Max">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 d-flex gap-2 mt-2">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="{{ url('/agent/properties') }}" class="btn btn-outline-secondary">Reset</a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -432,6 +682,42 @@
 
             event.preventDefault();
             window.location.href = target;
+        });
+    });
+
+    document.querySelectorAll('.property-toolbar-search').forEach((searchForm) => {
+        const searchInput = searchForm.querySelector('input[name="q"]');
+        if (!searchInput) {
+            return;
+        }
+
+        const syncSearchOverlay = () => {
+            searchForm.classList.toggle('has-value', searchInput.value.trim() !== '');
+        };
+
+        searchInput.addEventListener('input', syncSearchOverlay);
+        searchInput.addEventListener('change', syncSearchOverlay);
+        syncSearchOverlay();
+    });
+
+    document.querySelectorAll('[data-sort-value]').forEach((item) => {
+        item.addEventListener('click', () => {
+            const nextSort = item.dataset.sortValue || 'newest';
+            const form = document.getElementById('agent-property-filter-form');
+            if (!form) {
+                return;
+            }
+
+            let sortInput = form.querySelector('input[name="sort"]');
+            if (!sortInput) {
+                sortInput = document.createElement('input');
+                sortInput.type = 'hidden';
+                sortInput.name = 'sort';
+                form.appendChild(sortInput);
+            }
+
+            sortInput.value = nextSort;
+            form.requestSubmit();
         });
     });
 </script>

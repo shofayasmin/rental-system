@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ContractExtension;
 use App\Models\RentalRequest;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class TenantRequestController extends Controller
@@ -246,5 +248,81 @@ class TenantRequestController extends Controller
             'extensionStatusLabelMap',
             'now'
         ));
+    }
+
+    public function show(RentalRequest $request)
+    {
+        $request->loadMissing([
+            'property.agent:id,name,email',
+            'property.photos',
+            'property.province',
+            'property.regency',
+            'property.district',
+            'property.village',
+            'transaction',
+            'activeContract.extensions.transaction',
+        ]);
+
+        if ((int) $request->tenant_id !== (int) Auth::id()) {
+            abort(403);
+        }
+
+        $activeContract = $request->activeContract;
+        $extensions = $activeContract ? $activeContract->extensions->sortByDesc('created_at') : collect();
+        $latestExtension = $extensions->first();
+
+        return view('tenant.requests.show', [
+            'rentalRequest' => $request,
+            'activeContract' => $activeContract,
+            'extensions' => $extensions,
+            'latestExtension' => $latestExtension,
+        ]);
+    }
+
+    public function cancel(RentalRequest $request)
+    {
+        if ((int) $request->tenant_id !== (int) Auth::id()) {
+            abort(403);
+        }
+
+        if (!in_array($request->lifecycle_status, ['pending_review', 'awaiting_payment'], true)) {
+            return back()->with('error', 'This request can no longer be cancelled.');
+        }
+
+        $cancelled = false;
+
+        DB::transaction(function () use ($request, &$cancelled) {
+            $lockedRequest = RentalRequest::query()
+                ->whereKey($request->id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ((int) $lockedRequest->tenant_id !== (int) Auth::id()) {
+                abort(403);
+            }
+
+            if (!in_array($lockedRequest->lifecycle_status, ['pending_review', 'awaiting_payment'], true)) {
+                return;
+            }
+
+            $lockedRequest->update([
+                'status' => 'cancelled_by_tenant',
+                'cancelled_at' => now(),
+            ]);
+
+            Transaction::query()
+                ->where('rental_request_id', $lockedRequest->id)
+                ->where('type', 'initial_rent')
+                ->where('status', 'unpaid')
+                ->update(['status' => 'failed']);
+
+            $cancelled = true;
+        });
+
+        if (!$cancelled) {
+            return back()->with('error', 'This request can no longer be cancelled.');
+        }
+
+        return redirect('/tenant/requests?tab=closed')->with('success', 'Request cancelled.');
     }
 }

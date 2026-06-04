@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use App\Models\District;
-use App\Models\Contract;
 use App\Models\Facility;
 use App\Models\Property;
 use App\Models\PropertyAvailabilityCycle;
@@ -160,17 +159,7 @@ class PropertyController extends Controller
             'village'
         );
 
-        $activeContract = Contract::query()
-            ->where('status', 'active')
-            ->whereHas('rentalRequest', function ($query) use ($property) {
-                $query->where('property_id', $property->id);
-            })
-            ->with(['rentalRequest.tenant'])
-            ->orderByDesc('end_date')
-            ->orderByDesc('id')
-            ->first();
-
-        return view('agent.properties.show', compact('property', 'activeContract'));
+        return view('agent.properties.show', compact('property'));
     }
 
     public function store(StorePropertyRequest $request)

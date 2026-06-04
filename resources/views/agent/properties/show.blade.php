@@ -99,7 +99,6 @@
 
         @include('partials.property-sidebar-agent', [
             'property' => $property,
-            'activeContract' => $activeContract,
         ])
     </div>
 

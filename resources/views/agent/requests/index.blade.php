@@ -2,348 +2,557 @@
 
 @section('content')
 <style>
-    .agent-requests-tools {
+    .list-tools {
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-end;
         gap: 10px;
-        margin-bottom: 14px;
+        align-items: center;
     }
-    .agent-requests-tools .search-wrap {
+    .list-tools .search-wrap {
         position: relative;
-        width: 360px;
-        min-width: 320px;
-        max-width: 360px;
+        flex: 1 1 320px;
+        min-width: 240px;
     }
-    .agent-requests-tools .search-wrap .form-control {
+    .list-tools .search-wrap .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+    .list-tools .search-wrap .form-control {
         padding-left: 38px;
+        max-width: 100%;
     }
-    .properties-grid {
+    .list-tools .status-select {
+        width: 220px;
+        min-width: 220px;
+    }
+    .list-tools .sort-select {
+        width: 180px;
+        min-width: 180px;
+    }
+    .list-tools .form-check {
+        white-space: nowrap;
+        padding-left: 0;
+        margin: 0;
+        gap: 8px;
+    }
+    .list-tools .form-check .form-check-input {
+        float: none;
+        margin: 0;
+    }
+    .tenant-request-list {
         display: grid;
-        grid-template-columns: 360px 1fr;
-        gap: 18px;
-        align-items: start;
+        gap: 14px;
     }
-    .properties-list {
-        max-height: 70vh;
-        overflow-y: auto;
+    .tenant-request-card {
+        border: 1px solid #dbe3ee;
+        border-radius: 14px;
+        background: #fff;
     }
-    .property-pill {
-        border-radius: 12px;
+    .tenant-request-card-body {
+        padding: 16px;
     }
-    .request-card-head {
+    .tenant-request-header {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 10px;
+        gap: 12px;
         margin-bottom: 10px;
     }
-    .request-card-meta {
+    .tenant-request-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.3;
+    }
+    .tenant-request-title a {
+        color: #0f172a;
+        text-decoration: none;
+    }
+    .tenant-request-title a:hover {
+        text-decoration: underline;
+    }
+    .tenant-request-address {
+        margin-top: 3px;
+        color: #64748b;
+        font-size: .92rem;
+    }
+    .tenant-request-meta {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 10px 14px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 18px;
         margin-bottom: 12px;
     }
-    .request-meta-label {
+    .tenant-request-meta-item {
+        min-width: 0;
+    }
+    .tenant-request-meta-label {
         color: #64748b;
-        font-size: .78rem;
+        font-size: .8rem;
         font-weight: 600;
         margin-bottom: 2px;
     }
-    .request-meta-value {
+    .tenant-request-meta-value {
         color: #0f172a;
-        font-size: .92rem;
+        font-size: .95rem;
         font-weight: 600;
+        line-height: 1.3;
         word-break: break-word;
     }
-    .request-actions {
+    .tenant-request-actions {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 10px;
-        flex-wrap: wrap;
+        gap: 12px;
     }
-    .request-actions-left,
-    .request-actions-right {
+    .tenant-request-actions-fixed,
+    .tenant-request-actions-state {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         align-items: center;
     }
-    @media (max-width: 991px) {
-        .properties-grid {
-            grid-template-columns: 1fr;
-        }
-        .request-card-meta {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+    .tenant-request-actions-state {
+        justify-content: flex-end;
+    }
+    .tenant-request-meta-value .badge {
+        margin-left: 6px;
+        vertical-align: middle;
+    }
+    .tenant-request-meta-value .status-pill {
+        margin-left: 0;
     }
     @media (max-width: 767px) {
-        .agent-requests-tools {
-            justify-content: stretch;
-        }
-        .agent-requests-tools .search-wrap,
-        .agent-requests-tools .form-control,
-        .agent-requests-tools .form-select,
-        .agent-requests-tools .btn {
+        .list-tools .search-wrap,
+        .list-tools .status-select,
+        .list-tools .sort-select,
+        .list-tools .form-check {
             width: 100%;
-            max-width: none;
+            min-width: 0;
         }
-        .request-card-meta {
+        .tenant-request-meta {
             grid-template-columns: 1fr;
         }
-        .request-actions-left,
-        .request-actions-right {
+        .tenant-request-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .tenant-request-actions-fixed,
+        .tenant-request-actions-state {
             width: 100%;
         }
-        .request-actions .btn {
+        .tenant-request-actions-state {
+            justify-content: flex-start;
+        }
+        .tenant-request-actions .btn,
+        .tenant-request-actions button {
             width: 100%;
         }
     }
 </style>
 
+@php($displayList = $tab === 'extensions' ? $extensions : $requests)
 <div class="container">
     <h2 class="mb-3">Rental Requests</h2>
 
-    <div class="properties-grid">
-        <div class="card shadow-sm">
-            <div class="card-header">
-                <strong>Properties with Requests</strong>
-            </div>
-            <div class="list-group list-group-flush properties-list">
-                @forelse($properties as $property)
-                    @php($isActive = (int) $selectedPropertyId === (int) $property->id)
-                    <a
-                        href="{{ request()->fullUrlWithQuery(['property' => $property->id, 'applicants_page' => 1]) }}"
-                        class="list-group-item list-group-item-action {{ $isActive ? 'active' : '' }}"
-                    >
-                        <div class="d-flex justify-content-between align-items-start gap-2">
-                            <div>
-                                <div class="fw-semibold">{{ $property->title }}</div>
-                                <div class="small {{ $isActive ? 'text-white-50' : 'text-muted' }}">
-                                    {{ $property->address ?: 'Address not set' }}
-                                </div>
-                            </div>
-                        </div>
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link {{ $tab === 'in_progress' ? 'active' : '' }}"
+               href="{{ url('/agent/rental-requests') . '?' . http_build_query(array_merge(request()->except(['tab', 'status', 'page']), ['tab' => 'in_progress'])) }}">
+                In Progress ({{ $tabCounts['in_progress'] ?? 0 }})
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $tab === 'active_lease' ? 'active' : '' }}"
+               href="{{ url('/agent/rental-requests') . '?' . http_build_query(array_merge(request()->except(['tab', 'status', 'page']), ['tab' => 'active_lease'])) }}">
+                Active Lease ({{ $tabCounts['active_lease'] ?? 0 }})
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $tab === 'closed' ? 'active' : '' }}"
+               href="{{ url('/agent/rental-requests') . '?' . http_build_query(array_merge(request()->except(['tab', 'status', 'page']), ['tab' => 'closed'])) }}">
+                Closed ({{ $tabCounts['closed'] ?? 0 }})
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $tab === 'extensions' ? 'active' : '' }}"
+               href="{{ url('/agent/rental-requests') . '?' . http_build_query(array_merge(request()->except(['tab', 'status', 'page']), ['tab' => 'extensions'])) }}">
+                Extensions ({{ $tabCounts['extensions'] ?? 0 }})
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/agent/contracts">Contracts</a>
+        </li>
+    </ul>
 
-                        <div class="mt-2 d-flex flex-wrap gap-1">
-                            <span class="badge text-bg-warning text-dark">Pending: {{ $property->pending_review_count }}</span>
-                            <span class="badge text-bg-info text-dark">Awaiting: {{ $property->awaiting_payment_count }}</span>
-                            <span class="badge text-bg-success">Paid: {{ $property->paid_count }}</span>
-                        </div>
-
-                        <div class="mt-2 small {{ $isActive ? 'text-white-50' : 'text-muted' }}">
-                            Total: {{ $property->total_requests_count }}
-                            @if($property->last_request_activity_at)
-                                · Last: {{ \Carbon\Carbon::parse($property->last_request_activity_at)->format('Y-m-d H:i') }}
-                            @endif
-                        </div>
-                    </a>
-                @empty
-                    <div class="list-group-item text-muted">No rental requests available.</div>
-                @endforelse
-            </div>
-            <div class="card-footer">
-                {{ $properties->links() }}
-            </div>
+    <form method="GET" action="/agent/rental-requests" class="list-tools">
+        <input type="hidden" name="tab" value="{{ $tab }}">
+        <div class="search-wrap">
+            <img src="{{ asset('icons/search-icon.svg') }}"
+                 alt=""
+                 width="18"
+                 height="18"
+                 class="search-icon"
+                 onerror="this.style.display='none'">
+            <input type="text"
+                   name="q"
+                   id="tenant-requests-search"
+                   value="{{ $tenantSearch }}"
+                   class="form-control"
+                   placeholder="Search property, city, tenant...">
         </div>
+        @if($tab !== 'active_lease')
+            <select name="status" class="form-select status-select">
+                <option value="">All statuses</option>
+                @foreach($statusOptions as $statusValue => $statusText)
+                    <option value="{{ $statusValue }}" {{ $statusFilter === $statusValue ? 'selected' : '' }}>{{ $statusText }}</option>
+                @endforeach
+            </select>
+        @endif
+        <select name="sort" class="form-select sort-select" aria-label="Sort requests">
+            @foreach($sortOptions as $sortValue => $sortLabel)
+                <option value="{{ $sortValue }}" {{ $sort === $sortValue ? 'selected' : '' }}>{{ $sortLabel }}</option>
+            @endforeach
+        </select>
+        @if(in_array($tab, ['in_progress', 'extensions'], true))
+            <div class="form-check d-flex align-items-center px-2">
+                <input class="form-check-input me-2" type="checkbox" name="needs_action" value="1" id="needs-action" {{ $needsActionOnly ? 'checked' : '' }}>
+                <label class="form-check-label small" for="needs-action">Needs action only</label>
+            </div>
+        @endif
+        @if($tab !== 'active_lease')
+            <button class="btn btn-primary">Apply</button>
+            <a class="btn btn-outline-secondary"
+               href="{{ url('/agent/rental-requests') . '?' . http_build_query(['tab' => $tab]) }}">
+                Reset
+            </a>
+        @endif
+    </form>
 
-        <div>
-            @if(!$selectedProperty)
-                <div class="alert alert-secondary">Select a property to view applicants.</div>
+    @if($displayList->isEmpty())
+        <div class="alert alert-secondary mt-3 mb-0">
+            @if($tab === 'active_lease')
+                No active leases.
+            @elseif($tab === 'extensions')
+                No open extensions.
+            @elseif($tab === 'closed')
+                No closed requests.
             @else
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body">
-                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-                            <div>
-                                <h5 class="mb-1">{{ $selectedProperty->title }}</h5>
-                                <div class="text-muted small">{{ $selectedProperty->address ?: '-' }}</div>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 d-flex flex-wrap gap-2">
-                            <span class="badge text-bg-warning text-dark">Pending: {{ $selectedProperty->pending_review_count }}</span>
-                            <span class="badge text-bg-info text-dark">Awaiting Payment: {{ $selectedProperty->awaiting_payment_count }}</span>
-                            <span class="badge text-bg-success">Paid: {{ $selectedProperty->paid_count }}</span>
-                            <span class="badge text-bg-secondary">Total: {{ $selectedProperty->total_requests_count }}</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm mb-3">
-                    <div class="card-body">
-                        <form method="GET" action="/agent/rental-requests" class="row g-2 align-items-end">
-                            <input type="hidden" name="property" value="{{ $selectedProperty->id }}">
-
-                            <div class="col-md-4">
-                                <label class="form-label mb-1">Applicant Status</label>
-                                <select name="applicant_status" class="form-select">
-                                    <option value="">All</option>
-                                    @foreach(['pending_review','awaiting_payment','paid','rejected','cancelled_by_tenant','cancelled_by_agent','cancelled_lost'] as $statusOption)
-                                        <option value="{{ $statusOption }}" {{ $applicantStatus === $statusOption ? 'selected' : '' }}>
-                                            {{ strtoupper($statusOption) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label mb-1">Search Tenant</label>
-                                <input
-                                    type="text"
-                                    name="q"
-                                    value="{{ $tenantSearch }}"
-                                    class="form-control"
-                                    placeholder="Tenant name"
-                                >
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" name="needs_action" value="1" id="needs-action" {{ $needsActionOnly ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="needs-action">Needs action only</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-1 d-grid">
-                                <button class="btn btn-primary">Go</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped mb-0 align-middle">
-                            <thead>
-                                <tr>
-                                    <th style="width: 24px;">#</th>
-                                    <th>Tenant</th>
-                                    <th>Submitted At</th>
-                                    <th>Status</th>
-                                    <th>Payment Due</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($applicants && $applicants->count())
-                                    @foreach($applicants as $idx => $req)
-                                        @php($hasAnotherActivePayment = (bool) ($hasActiveAwaitingPaymentByProperty[$req->property_id] ?? false) && $req->status !== 'awaiting_payment')
-                                        <tr>
-                                            <td>{{ ($applicants->firstItem() ?? 1) + $idx }}</td>
-                                            <td>{{ $req->tenant->name }}</td>
-                                            <td>{{ $req->created_at?->format('Y-m-d H:i') }}</td>
-                                            <td>
-                                                @if($req->status === 'pending_review')
-                                                    <span class="badge bg-warning text-dark">PENDING REVIEW</span>
-                                                @elseif($req->status === 'awaiting_payment')
-                                                    <span class="badge bg-info text-dark">AWAITING PAYMENT</span>
-                                                @elseif($req->status === 'paid')
-                                                    <span class="badge bg-success">PAID</span>
-                                                @elseif($req->status === 'cancelled_by_tenant')
-                                                    <span class="badge bg-dark">CANCELLED BY TENANT</span>
-                                                @elseif($req->status === 'cancelled_by_agent')
-                                                    <span class="badge bg-dark">CANCELLED BY AGENT</span>
-                                                @elseif($req->status === 'cancelled_lost')
-                                                    <span class="badge bg-dark">CANCELLED (LOST)</span>
-                                                @else
-                                                    <span class="badge bg-danger">REJECTED</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($req->payment_due_at)
-                                                    {{ $req->payment_due_at->format('Y-m-d H:i') }}
-                                                @else
-                                                    <span class="text-muted">-</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if($req->status === 'pending_review')
-                                                    @if(!$hasAnotherActivePayment)
-                                                        <form method="POST" action="/agent/rental-requests/{{ $req->id }}/approve" style="display:inline">
-                                                            @csrf
-                                                            <button class="btn btn-sm btn-success">Approve</button>
-                                                        </form>
-                                                        <form method="POST" action="/agent/rental-requests/{{ $req->id }}/reject" style="display:inline">
-                                                            @csrf
-                                                            <button class="btn btn-sm btn-danger">Reject</button>
-                                                        </form>
-                                                    @else
-                                                        <span class="text-muted">Waiting current payment lock holder</span>
-                                                    @endif
-                                                @elseif($req->status === 'awaiting_payment')
-                                                    <form method="POST" action="/agent/rental-requests/{{ $req->id }}/cancel-lock" style="display:inline">
-                                                        @csrf
-                                                        <button class="btn btn-sm btn-outline-danger">Cancel Lock</button>
-                                                    </form>
-                                                    <a href="/messages/{{ $req->id }}" class="btn btn-sm btn-info">Open Chat</a>
-                                                @elseif(in_array($req->status, ['rejected', 'cancelled_by_tenant', 'cancelled_by_agent', 'cancelled_lost'], true))
-                                                    <span class="badge bg-secondary">Closed</span>
-                                                @else
-                                                    <a href="/messages/{{ $req->id }}" class="btn btn-sm btn-info">Open Chat</a>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6" class="text-center text-muted">No applicants found for current filter.</td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    @if($applicants)
-                        <div class="card-footer">
-                            {{ $applicants->links() }}
-                        </div>
-                    @endif
-                </div>
+                No in-progress requests.
             @endif
         </div>
-    </div>
-
-    <h2 class="mb-3 mt-5">Extension Requests</h2>
-
-    @if($pendingExtensions->isEmpty())
-        <div class="alert alert-secondary">
-            No pending extension requests.
-        </div>
     @else
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Property</th>
-                    <th>Tenant</th>
-                    <th>Current End</th>
-                    <th>Months</th>
-                    <th>Amount</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pendingExtensions as $extension)
-                    <tr>
-                        <td>{{ data_get($extension, 'contract.rentalRequest.property.title', '-') }}</td>
-                        <td>{{ data_get($extension, 'contract.rentalRequest.tenant.name', '-') }}</td>
-                        <td>{{ $extension->old_end_date }}</td>
-                        <td>{{ $extension->months_requested }}</td>
-                        <td>{{ $extension->amount }}</td>
-                        <td>
-                            <form method="POST" action="/agent/contract-extensions/{{ $extension->id }}/approve" class="d-inline">
-                                @csrf
-                                <button class="btn btn-sm btn-success">Approve</button>
-                            </form>
-                            <form method="POST" action="/agent/contract-extensions/{{ $extension->id }}/reject" class="d-inline">
-                                @csrf
-                                <button class="btn btn-sm btn-danger">Reject</button>
-                            </form>
-                        </td>
-                    </tr>
+        <div class="tenant-request-list mt-3" id="tenant-request-list">
+            @if($tab === 'extensions')
+                @foreach($extensions as $extension)
+                    @php($r = data_get($extension, 'contract.rentalRequest'))
+                    @php($property = data_get($r, 'property'))
+                    @php($tenant = data_get($r, 'tenant'))
+                    @php($locationText = collect([data_get($property, 'regency.name'), data_get($property, 'district.name')])->filter()->implode(', '))
+                    @php($isAwaitingPayment = $extension->status === 'awaiting_payment')
+                    @php($dueAt = $extension->payment_due_at)
+                    @php($isExpired = $isAwaitingPayment && $dueAt && $dueAt->isPast())
+                    @php($isDueSoon = $isAwaitingPayment && $dueAt && $dueAt->isFuture() && $dueAt->lte(now()->copy()->addDay()))
+                    @php($mainStatusText = $extensionStatusLabelMap[$extension->status] ?? strtoupper((string) $extension->status))
+                    @php($mainStatusClass = $extension->status === 'pending' ? 'bg-warning text-dark' : ($extension->status === 'awaiting_payment' ? 'bg-info text-dark' : 'bg-secondary'))
+                    @php($monthlyRent = (float) ($extension->monthly_rent_snapshot ?? data_get($extension, 'contract.monthly_rent') ?? data_get($property, 'rent_price', 0)))
+                    <div class="tenant-request-card">
+                        <div class="tenant-request-card-body">
+                            <div class="tenant-request-header">
+                                <div>
+                                    <h3 class="tenant-request-title">
+                                        <a href="/agent/properties/{{ $property->id }}">
+                                            {{ $property->title }}
+                                        </a>
+                                    </h3>
+                                    <div class="tenant-request-address">
+                                        {{ $locationText !== '' ? $locationText : ($property->address ?: 'Location not set') }}
+                                    </div>
+                                </div>
+                                <span class="badge {{ $mainStatusClass }}">{{ $mainStatusText }}</span>
+                            </div>
+
+                            <div class="tenant-request-meta">
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Monthly Rent</div>
+                                    <div class="tenant-request-meta-value">Rp {{ number_format($monthlyRent, 0, ',', '.') }}/month</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Tenant</div>
+                                    <div class="tenant-request-meta-value">{{ $tenant->name ?? '-' }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Requested At</div>
+                                    <div class="tenant-request-meta-value">{{ $extension->created_at?->format('Y-m-d H:i') ?: '-' }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Period</div>
+                                    <div class="tenant-request-meta-value">{{ data_get($extension, 'old_end_date', '-') }} -> {{ data_get($extension, 'new_end_date', '-') }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Payment Due</div>
+                                    <div class="tenant-request-meta-value">
+                                        @if($isAwaitingPayment && $dueAt)
+                                            {{ $dueAt->format('Y-m-d H:i') }}
+                                            @if($isExpired)
+                                                <span class="badge bg-danger">Expired</span>
+                                            @elseif($isDueSoon)
+                                                <span class="badge bg-warning text-dark">Due Soon</span>
+                                            @endif
+                                        @else
+                                            -
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Amount</div>
+                                    <div class="tenant-request-meta-value">Rp {{ number_format((float) $extension->amount, 0, ',', '.') }}</div>
+                                </div>
+                            </div>
+
+                            <div class="tenant-request-actions">
+                                <div class="tenant-request-actions-fixed">
+                                    @if($r)
+                                        <a href="/agent/rental-requests/{{ $r->id }}" class="btn btn-outline-primary btn-sm">Rental Detail</a>
+                                        <a href="/messages/{{ $r->id }}" class="btn btn-info btn-sm">Chat Tenant</a>
+                                    @endif
+                                </div>
+                                <div class="tenant-request-actions-state">
+                                    @if($extension->status === 'pending')
+                                        <form method="POST" action="/agent/contract-extensions/{{ $extension->id }}/approve" class="d-inline">
+                                            @csrf
+                                            <button class="btn btn-success btn-sm">Approve Extension</button>
+                                        </form>
+                                        <form method="POST" action="/agent/contract-extensions/{{ $extension->id }}/reject" class="d-inline">
+                                            @csrf
+                                            <button class="btn btn-danger btn-sm">Reject Extension</button>
+                                        </form>
+                                    @elseif($extension->status === 'awaiting_payment')
+                                        <span class="badge bg-info text-dark">Waiting Tenant Payment</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
-            </tbody>
-        </table>
+            @else
+                @foreach($requests as $r)
+                    @php($activeContract = $r->activeContract)
+                    @php($latestExtension = data_get($activeContract, 'latestExtension'))
+                    @php($extensionTransaction = data_get($latestExtension, 'transaction'))
+                    @php($monthlyRent = (float) ($activeContract ? $activeContract->monthly_rent : $r->property->rent_price))
+                    @php($locationText = collect([$r->property->regency?->name, $r->property->district?->name])->filter()->implode(', '))
+                    @php($isAwaitingPayment = $r->status === 'awaiting_payment')
+                    @php($initialDueAt = $r->payment_due_at)
+                    @php($isInitialExpired = $isAwaitingPayment && $initialDueAt && $initialDueAt->isPast())
+                    @php($isInitialDueSoon = $isAwaitingPayment && $initialDueAt && $initialDueAt->isFuture() && $initialDueAt->lte(now()->copy()->addDay()))
+                    @php($extensionDueAt = data_get($latestExtension, 'payment_due_at'))
+                    @php($isExtensionAwaitingPayment = $latestExtension && $latestExtension->status === 'awaiting_payment')
+                    @php($isExtensionExpired = $isExtensionAwaitingPayment && $extensionDueAt && $extensionDueAt->isPast())
+                    @php($isExtensionDueSoon = $isExtensionAwaitingPayment && $extensionDueAt && $extensionDueAt->isFuture() && $extensionDueAt->lte(now()->copy()->addDay()))
+                    @php($currentRequestType = '-')
+                    @php($currentRequestState = 'No Pending Payment')
+                    @php($currentRequestBadgeClass = 'bg-light text-dark')
+                    @php($currentRequestDueAt = null)
+                    @php($currentRequestAmount = null)
+                    @if($isAwaitingPayment && $r->transaction && $r->transaction->status === 'unpaid')
+                        @php($currentRequestType = 'Initial')
+                        @php($currentRequestState = 'Awaiting Payment')
+                        @php($currentRequestBadgeClass = 'bg-info text-dark')
+                        @php($currentRequestDueAt = $initialDueAt)
+                        @php($currentRequestAmount = (float) $r->transaction->amount)
+                    @elseif($latestExtension && $latestExtension->status === 'awaiting_payment')
+                        @php($currentRequestType = 'Extension')
+                        @php($currentRequestState = 'Awaiting Payment')
+                        @php($currentRequestBadgeClass = 'bg-info text-dark')
+                        @php($currentRequestDueAt = $extensionDueAt)
+                        @php($currentRequestAmount = (float) data_get($latestExtension, 'amount'))
+                    @elseif($latestExtension && $latestExtension->status === 'pending')
+                        @php($currentRequestType = 'Extension')
+                        @php($currentRequestState = 'Pending Approval')
+                        @php($currentRequestBadgeClass = 'bg-warning text-dark')
+                        @php($currentRequestAmount = (float) data_get($latestExtension, 'amount'))
+                    @elseif($latestExtension && $latestExtension->status === 'paid')
+                        @php($currentRequestType = 'Extension')
+                        @php($currentRequestState = 'Paid')
+                        @php($currentRequestBadgeClass = 'bg-success')
+                        @php($currentRequestAmount = (float) data_get($latestExtension, 'amount'))
+                    @elseif($r->status === 'pending_review')
+                        @php($currentRequestType = 'Initial')
+                        @php($currentRequestState = 'Under Review')
+                        @php($currentRequestBadgeClass = 'bg-warning text-dark')
+                        @php($currentRequestAmount = (float) $r->property->rent_price)
+                    @endif
+                    @php($requestActionBy = null)
+                    @php($requestActionAt = null)
+                    @if($r->status === 'rejected')
+                        @php($requestActionBy = 'Agent')
+                        @php($requestActionAt = $r->rejected_at)
+                    @elseif($r->status === 'cancelled_by_tenant')
+                        @php($requestActionBy = 'Tenant')
+                        @php($requestActionAt = $r->cancelled_at)
+                    @elseif($r->status === 'cancelled_by_agent')
+                        @php($requestActionBy = 'Agent')
+                        @php($requestActionAt = $r->cancelled_at)
+                    @elseif($r->status === 'cancelled_lost')
+                        @php($requestActionBy = 'System')
+                        @php($requestActionAt = $r->cancelled_at)
+                    @endif
+                    @php($mainStatusText = 'REQUEST APPROVED (PAID)')
+                    @php($mainStatusClass = 'bg-primary')
+                    @if($currentRequestState === 'Awaiting Payment')
+                        @php($mainStatusText = 'AWAITING PAYMENT')
+                        @php($mainStatusClass = 'bg-info text-dark')
+                    @elseif($currentRequestState === 'Pending Approval')
+                        @php($mainStatusText = 'PENDING APPROVAL')
+                        @php($mainStatusClass = 'bg-warning text-dark')
+                    @elseif($r->status === 'pending_review')
+                        @php($mainStatusText = 'REQUEST UNDER REVIEW')
+                        @php($mainStatusClass = 'bg-warning text-dark')
+                    @elseif($r->status === 'paid' && $activeContract && $activeContract->status === 'active')
+                        @php($mainStatusText = 'ACTIVE LEASE')
+                        @php($mainStatusClass = 'bg-success')
+                    @elseif($r->status === 'cancelled_lost')
+                        @php($mainStatusText = 'PAYMENT EXPIRED')
+                        @php($mainStatusClass = 'bg-dark')
+                    @elseif($r->status === 'cancelled_by_tenant')
+                        @php($mainStatusText = 'REQUEST CANCELLED BY TENANT')
+                        @php($mainStatusClass = 'bg-dark')
+                    @elseif($r->status === 'cancelled_by_agent')
+                        @php($mainStatusText = 'REQUEST CANCELLED BY AGENT')
+                        @php($mainStatusClass = 'bg-dark')
+                    @elseif($r->status === 'rejected')
+                        @php($mainStatusText = 'REQUEST REJECTED BY AGENT')
+                        @php($mainStatusClass = 'bg-danger')
+                    @endif
+                    @php($hasAnotherActivePayment = (bool) ($hasActiveAwaitingPaymentByProperty[$r->property_id] ?? false) && $r->status !== 'awaiting_payment')
+                    <div class="tenant-request-card">
+                        <div class="tenant-request-card-body">
+                            <div class="tenant-request-header">
+                                <div>
+                                    <h3 class="tenant-request-title">
+                                        <a href="/agent/properties/{{ $r->property->id }}">
+                                            {{ $r->property->title }}
+                                        </a>
+                                    </h3>
+                                    <div class="tenant-request-address">
+                                        {{ $locationText !== '' ? $locationText : ($r->property->address ?: 'Location not set') }}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge {{ $mainStatusClass }}">{{ $mainStatusText }}</span>
+                                </div>
+                            </div>
+
+                            <div class="tenant-request-meta">
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Monthly Rent</div>
+                                    <div class="tenant-request-meta-value">Rp {{ number_format($monthlyRent, 0, ',', '.') }}/month</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Tenant</div>
+                                    <div class="tenant-request-meta-value">{{ $r->tenant?->name ?? '-' }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Requested At</div>
+                                    <div class="tenant-request-meta-value">{{ $r->created_at?->format('Y-m-d H:i') ?: '-' }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Contract End</div>
+                                    <div class="tenant-request-meta-value">{{ data_get($activeContract, 'end_date', '-') }}</div>
+                                </div>
+                                <div class="tenant-request-meta-item">
+                                    <div class="tenant-request-meta-label">Current Request</div>
+                                    <div class="tenant-request-meta-value">
+                                        <span class="badge status-pill {{ $currentRequestBadgeClass }}">{{ $currentRequestState }}</span>
+                                        <div class="small text-muted mt-1">
+                                            Type: {{ $currentRequestType }}
+                                            @if($currentRequestAmount !== null)
+                                                · Amount: Rp {{ number_format($currentRequestAmount, 0, ',', '.') }}
+                                            @endif
+                                            @if($currentRequestDueAt)
+                                                · Due: {{ $currentRequestDueAt->format('Y-m-d H:i') }}
+                                            @endif
+                                            @if($currentRequestDueAt)
+                                                @if($isInitialExpired || $isExtensionExpired)
+                                                    <span class="badge bg-danger">Expired</span>
+                                                @elseif($isInitialDueSoon || $isExtensionDueSoon)
+                                                    <span class="badge bg-warning text-dark">Due Soon</span>
+                                                @endif
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                @if($requestActionBy)
+                                    <div class="tenant-request-meta-item">
+                                        <div class="tenant-request-meta-label">Last Action</div>
+                                        <div class="tenant-request-meta-value">
+                                            {{ $requestActionBy }}
+                                            @if($requestActionAt)
+                                                · {{ $requestActionAt->format('Y-m-d H:i') }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="tenant-request-actions">
+                                <div class="tenant-request-actions-fixed">
+                                    <a href="/agent/rental-requests/{{ $r->id }}" class="btn btn-outline-primary btn-sm">Rental Detail</a>
+                                    <a href="/messages/{{ $r->id }}" class="btn btn-info btn-sm">Chat Tenant</a>
+                                </div>
+                                <div class="tenant-request-actions-state">
+                                    @if($r->status === 'pending_review')
+                                        @if(!$hasAnotherActivePayment)
+                                            <form method="POST" action="/agent/rental-requests/{{ $r->id }}/approve" class="d-inline">
+                                                @csrf
+                                                <button class="btn btn-success btn-sm">Approve</button>
+                                            </form>
+                                            <form method="POST" action="/agent/rental-requests/{{ $r->id }}/reject" class="d-inline">
+                                                @csrf
+                                                <button class="btn btn-danger btn-sm">Reject</button>
+                                            </form>
+                                        @else
+                                            <span class="badge bg-secondary">Waiting Current Payment Lock</span>
+                                        @endif
+                                    @elseif($r->status === 'awaiting_payment')
+                                        <form method="POST" action="/agent/rental-requests/{{ $r->id }}/cancel-lock" class="d-inline">
+                                            @csrf
+                                            <button class="btn btn-outline-danger btn-sm">Cancel Lock</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
     @endif
 </div>
+
+<script>
+(function () {
+    const searchInput = document.getElementById('tenant-requests-search');
+    if (searchInput) {
+        let submitTimer = null;
+        searchInput.addEventListener('input', () => {
+            clearTimeout(submitTimer);
+            submitTimer = setTimeout(() => {
+                searchInput.form?.requestSubmit();
+            }, 300);
+        });
+    }
+
+    const sortSelect = document.querySelector('select[name="sort"]');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', () => {
+            sortSelect.form?.requestSubmit();
+        });
+    }
+})();
+</script>
+
 @endsection
