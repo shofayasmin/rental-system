@@ -1,2 +1,0 @@
-no,query_topic,title,authors,year,journal,doi,url,source_type(open_access|preprint),full_text_access(yes|no),pdf_local_path,matches_subchapter(2.1|2.2|2.3|2.4|2.5|2.6),relevance_score_1_to_5,key_claim_from_paper,evidence_sentence_verbatim,evidence_location(page_or_section),in_text_citation_APA,reference_APA7,decision(keep|drop),notes
-1,,,,,,,,,,,,,,,,,,,,
