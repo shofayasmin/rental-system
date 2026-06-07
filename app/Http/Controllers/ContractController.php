@@ -171,16 +171,20 @@ class ContractController extends Controller
 
             $approvedAt = now();
 
-            Transaction::create([
-                'rental_request_id' => $rentalRequest->id,
-                'property_id' => $property->id,
-                'tenant_id' => $rentalRequest->tenant_id,
-                'agent_id' => $property->agent_id,
-                'contract_extension_id' => $extension->id,
-                'amount' => $amount,
-                'type' => 'extension_rent',
-                'status' => 'unpaid',
-            ]);
+            Transaction::updateOrCreate(
+                [
+                    'contract_extension_id' => $extension->id,
+                ],
+                [
+                    'rental_request_id' => $rentalRequest->id,
+                    'property_id' => $property->id,
+                    'tenant_id' => $rentalRequest->tenant_id,
+                    'agent_id' => $property->agent_id,
+                    'amount' => $amount,
+                    'type' => 'extension_rent',
+                    'status' => 'unpaid',
+                ]
+            );
 
             $extension->update([
                 'amount' => $amount,

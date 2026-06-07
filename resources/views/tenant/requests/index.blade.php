@@ -211,28 +211,32 @@
                    class="form-control"
                    placeholder="Search property, city, tenant...">
         </div>
-        <select name="status" class="form-select status-select">
-            <option value="">All statuses</option>
-            @foreach($statusOptions as $statusValue => $statusText)
-                <option value="{{ $statusValue }}" {{ $statusFilter === $statusValue ? 'selected' : '' }}>{{ $statusText }}</option>
-            @endforeach
-        </select>
+        @if(!in_array($tab, ['active_lease', 'extensions'], true))
+            <select name="status" class="form-select status-select">
+                <option value="">All statuses</option>
+                @foreach($statusOptions as $statusValue => $statusText)
+                    <option value="{{ $statusValue }}" {{ $statusFilter === $statusValue ? 'selected' : '' }}>{{ $statusText }}</option>
+                @endforeach
+            </select>
+        @endif
         <select name="sort" class="form-select sort-select" aria-label="Sort requests">
             @foreach($sortOptions as $sortValue => $sortLabel)
                 <option value="{{ $sortValue }}" {{ $sort === $sortValue ? 'selected' : '' }}>{{ $sortLabel }}</option>
             @endforeach
         </select>
-        @if(in_array($tab, ['in_progress', 'extensions'], true))
+        @if($tab === 'in_progress')
             <div class="form-check d-flex align-items-center px-2">
                 <input class="form-check-input me-2" type="checkbox" name="needs_action" value="1" id="needs-action" {{ $needsActionOnly ? 'checked' : '' }}>
                 <label class="form-check-label small" for="needs-action">Needs action only</label>
             </div>
         @endif
-        <button class="btn btn-primary">Apply</button>
-        <a class="btn btn-outline-secondary"
-           href="{{ url('/tenant/requests') . '?' . http_build_query(['tab' => $tab]) }}">
-            Reset
-        </a>
+        @if(!in_array($tab, ['active_lease', 'extensions'], true))
+            <button class="btn btn-primary">Apply</button>
+            <a class="btn btn-outline-secondary"
+               href="{{ url('/tenant/requests') . '?' . http_build_query(['tab' => $tab]) }}">
+                Reset
+            </a>
+        @endif
     </form>
 
     @if($displayList->isEmpty())
@@ -537,7 +541,7 @@
                                     @endif
 
                                     @if($r->status === 'paid' && $r->transaction && $r->transaction->status === 'paid')
-                                        @if($activeContract && $activeContract->status === 'active' && (!$latestExtension || in_array($latestExtension->status, ['paid', 'rejected', 'expired'], true)))
+                                        @if($activeContract && $activeContract->status === 'active' && (!$latestExtension || in_array($latestExtension->status, ['paid', 'rejected', 'expired', 'cancelled_by_tenant'], true)))
                                             <form method="POST" action="/tenant/contracts/{{ $activeContract->id }}/extend" class="d-inline">
                                                 @csrf
                                                 <input type="hidden" name="months_requested" value="1">

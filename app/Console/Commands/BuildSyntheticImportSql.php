@@ -723,7 +723,7 @@ class BuildSyntheticImportSql extends Command
 
         $transactionRows = [];
         $txCodesSeen = [];
-        $requestTypePairs = [];
+        $initialRequestPairs = [];
         $allowedTxType = ['initial_rent', 'extension_rent'];
         $allowedTxStatus = ['unpaid', 'paid', 'failed'];
 
@@ -754,12 +754,12 @@ class BuildSyntheticImportSql extends Command
                 $errors[] = "06_transactions line {$line}: unknown request_code '{$requestCode}'.";
             }
 
-            if ($requestCode !== null && $type !== '') {
+            if ($requestCode !== null && $type === 'initial_rent') {
                 $pairKey = "{$requestCode}|{$type}";
-                if (isset($requestTypePairs[$pairKey])) {
+                if (isset($initialRequestPairs[$pairKey])) {
                     $errors[] = "06_transactions line {$line}: duplicate request_code+type '{$pairKey}'.";
                 }
-                $requestTypePairs[$pairKey] = true;
+                $initialRequestPairs[$pairKey] = true;
             }
 
             $extensionId = null;

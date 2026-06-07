@@ -203,7 +203,7 @@
                    class="form-control"
                    placeholder="Search property, city, tenant...">
         </div>
-        @if($tab !== 'active_lease')
+        @if(!in_array($tab, ['active_lease', 'extensions'], true))
             <select name="status" class="form-select status-select">
                 <option value="">All statuses</option>
                 @foreach($statusOptions as $statusValue => $statusText)
@@ -216,13 +216,13 @@
                 <option value="{{ $sortValue }}" {{ $sort === $sortValue ? 'selected' : '' }}>{{ $sortLabel }}</option>
             @endforeach
         </select>
-        @if(in_array($tab, ['in_progress', 'extensions'], true))
+        @if($tab === 'in_progress')
             <div class="form-check d-flex align-items-center px-2">
                 <input class="form-check-input me-2" type="checkbox" name="needs_action" value="1" id="needs-action" {{ $needsActionOnly ? 'checked' : '' }}>
                 <label class="form-check-label small" for="needs-action">Needs action only</label>
             </div>
         @endif
-        @if($tab !== 'active_lease')
+        @if(!in_array($tab, ['active_lease', 'extensions'], true))
             <button class="btn btn-primary">Apply</button>
             <a class="btn btn-outline-secondary"
                href="{{ url('/agent/rental-requests') . '?' . http_build_query(['tab' => $tab]) }}">

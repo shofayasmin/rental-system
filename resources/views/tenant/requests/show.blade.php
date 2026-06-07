@@ -375,6 +375,16 @@
                                     Cancel Extension
                                 </button>
                             </form>
+                        @elseif($activeContract && $activeContract->status === 'active' && (!$latestExtension || in_array($latestExtension->status, ['paid', 'rejected', 'expired', 'cancelled_by_tenant'], true)))
+                            @php($hasAction = true)
+                            <form method="POST" action="/tenant/contracts/{{ $activeContract->id }}/extend">
+                                @csrf
+                                <input type="hidden" name="months_requested" value="1">
+                                <button class="btn btn-warning w-100"
+                                        onclick="return confirm('Are you sure you want to request an extension?')">
+                                    Request Extend
+                                </button>
+                            </form>
                         @endif
 
                         @if(!$hasAction)

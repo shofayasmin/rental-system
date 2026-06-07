@@ -10,7 +10,10 @@ class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::whereIn('role', ['agent','tenant'])->get();
+        $users = User::whereIn('role', ['agent', 'tenant'])
+            ->orderBy('name', 'asc')
+            ->paginate(20);
+
         return view('admin.users.index', compact('users'));
     }
 

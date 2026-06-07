@@ -145,8 +145,7 @@ class RentalRequestController extends Controller
                 'rejected' => 'REQUEST REJECTED BY AGENT',
                 'cancelled_by_tenant' => 'REQUEST CANCELLED BY TENANT',
                 'cancelled_by_agent' => 'REQUEST CANCELLED BY AGENT',
-                'cancelled_lost' => 'PAYMENT EXPIRED',
-                'expired' => 'PAYMENT EXPIRED',
+                'payment_expired' => 'PAYMENT EXPIRED',
             ],
         ];
 
@@ -188,6 +187,9 @@ class RentalRequestController extends Controller
 
         $statusOptions = $statusOptionsByTab[$tab] ?? [];
         $statusFilter = (string) $request->query('status', '');
+        if ($tab === 'closed' && $statusFilter === 'expired') {
+            $statusFilter = 'payment_expired';
+        }
         $needsActionOnly = $request->boolean('needs_action');
 
         $hasActiveAwaitingPaymentByProperty = RentalRequest::query()
@@ -269,10 +271,15 @@ class RentalRequestController extends Controller
             }
 
             if ($statusFilter !== '') {
-                if ($tab === 'closed' && $statusFilter === 'expired') {
-                    $requestsQuery->where('status', 'awaiting_payment')
-                        ->whereNotNull('payment_due_at')
-                        ->where('payment_due_at', '<=', $now);
+                if ($tab === 'closed' && $statusFilter === 'payment_expired') {
+                    $requestsQuery->where(function ($query) use ($now) {
+                        $query->where('status', 'cancelled_lost')
+                            ->orWhere(function ($expiredQuery) use ($now) {
+                                $expiredQuery->where('status', 'awaiting_payment')
+                                    ->whereNotNull('payment_due_at')
+                                    ->where('payment_due_at', '<=', $now);
+                            });
+                    });
                 } elseif (in_array($statusFilter, $tabStatuses[$tab] ?? [], true)) {
                     $requestsQuery->where('status', $statusFilter);
                 }

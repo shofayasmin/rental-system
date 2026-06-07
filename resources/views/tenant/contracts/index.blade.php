@@ -173,7 +173,7 @@
                                     {{ $locationText !== '' ? $locationText : (data_get($property, 'address') ?: 'Location not set') }}
                                 </div>
                                 <div class="tenant-request-owner">
-                                    Owner: {{ $ownerName ?: '-' }}
+                                    {{ $ownerName ?: '-' }}
                                 </div>
                             </div>
                         </div>
